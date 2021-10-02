@@ -7,6 +7,7 @@
 #include "Core/Session/SessionGameMode.h"
 #include "Components/KeyRingComponent.h"
 #include "Components/InteractionQueueComponent.h"
+#include "Components/WidgetComponent.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -19,6 +20,23 @@ APlayerCharacter::APlayerCharacter()
 	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 	KeyRingComponent = CreateDefaultSubobject<UKeyRingComponent>("KeyRingComponent");
 	InteractionQueue = CreateDefaultSubobject<UInteractionQueueComponent>("InteractionQueue");
+
+	ArmorIcon = CreateDefaultSubobject<UStaticMeshComponent>("ArmorIcon");
+	ArmorIcon->SetupAttachment(PlayerCamera);
+	
+	HealthIcon = CreateDefaultSubobject<UStaticMeshComponent>("HealthIcon");
+	HealthIcon->SetupAttachment(PlayerCamera);
+
+	ArmorWidget = CreateDefaultSubobject<UWidgetComponent>("ArmorWidget");
+	ArmorWidget->SetupAttachment(ArmorIcon);
+    ArmorWidget->SetWidgetSpace(EWidgetSpace::Screen);
+    ArmorWidget->SetDrawAtDesiredSize(true);
+
+	HealthWidget = CreateDefaultSubobject<UWidgetComponent>("HealthWidget");
+	HealthWidget->SetupAttachment(HealthIcon);
+    HealthWidget->SetWidgetSpace(EWidgetSpace::Screen);
+    HealthWidget->SetDrawAtDesiredSize(true);
+	
 }
 
 void APlayerCharacter::BeginPlay()

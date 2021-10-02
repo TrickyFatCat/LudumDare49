@@ -10,6 +10,7 @@ class UCameraComponent;
 class UWeaponComponent;
 class UKeyRingComponent;
 class UInteractionQueueComponent;
+class UWidgetComponent;
 
 /**
  * 
@@ -77,4 +78,18 @@ protected:
 	// Interaction
 private:
 	void StartInteraction();
+
+	// Interface
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UStaticMeshComponent* ArmorIcon = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UStaticMeshComponent* HealthIcon = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UWidgetComponent* ArmorWidget = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UWidgetComponent* HealthWidget = nullptr;
 };
