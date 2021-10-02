@@ -47,8 +47,6 @@ bool AWeaponBase::GetTraceData(FVector& TraceStart, FVector& TraceEnd, const boo
 
 	if (!FProjectUtils::GetPlayerViewPoint(GetOwner(), ViewLocation, ViewRotation)) return false;
 
-	// if (!FTrickyUtils::GetPlayerViewPoint(GetOwner(), ViewLocation, ViewRotation)) return false;
-
 	TraceStart = ViewLocation;
 	FVector TraceDirection = ViewRotation.Vector();
 
