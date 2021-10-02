@@ -26,4 +26,23 @@ void APlayerCharacter::Tick(float DeltaSeconds)
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	// Movement
+	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &APlayerCharacter::Jump);
+
+	// Aiming
+	PlayerInputComponent->BindAxis("LookUp", this, &APlayerCharacter::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("LookRight", this, &APlayerCharacter::AddControllerYawInput);
+}
+
+void APlayerCharacter::MoveForward(const float AxisValue)
+{
+	AddMovementInput(GetActorForwardVector(), AxisValue);
+}
+
+void APlayerCharacter::MoveRight(const float AxisValue)
+{
+	AddMovementInput(GetActorRightVector(), AxisValue);
 }

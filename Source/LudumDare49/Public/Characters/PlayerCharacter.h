@@ -33,4 +33,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	USceneComponent* WeaponScene = nullptr;
+
+	// Movement
+	protected:
+	void MoveForward(const float AxisValue);
+
+	void MoveRight(const float AxisValue);
 };
