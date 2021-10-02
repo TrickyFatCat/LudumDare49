@@ -15,7 +15,7 @@ enum class EKey : uint8
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class LUDUMDARE49_API UKeyRingComponent : public UActorComponent
+class TRICKYPROTOTYPING_API UKeyRingComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
