@@ -174,9 +174,9 @@ void AWeaponBase::MakeShot()
 
 			if (Projectile)
 			{
-				// Projectile->SetDirectionAndDamage(Direction, WeaponData.DamageType, CalculateDamage());
-				// Projectile->SetOwner(GetOwner());
-				// Projectile->FinishSpawning(SpawnTransform);
+				Projectile->SetDirectionAndDamage(Direction, WeaponData.DamageType, CalculateDamage());
+				Projectile->SetOwner(GetOwner());
+				Projectile->FinishSpawning(SpawnTransform);
 			}
 		}
 
