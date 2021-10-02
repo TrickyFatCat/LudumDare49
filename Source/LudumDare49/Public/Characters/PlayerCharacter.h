@@ -34,7 +34,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	USceneComponent* WeaponScene = nullptr;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UWeaponComponent* WeaponComponent = nullptr;
 
@@ -46,7 +46,7 @@ protected:
 
 	// Weapon sway
 
-	private:
+private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Animation", meta=(AllowPrivateAccess="true"))
 	float SwayPower = 3.f;
 
@@ -55,11 +55,14 @@ protected:
 
 	UPROPERTY(VisibleInstanceOnly)
 	FRotator InitialWeaponRotation = FRotator::ZeroRotator;
-	
+
 	void SetHorizontalSway(const float AxisValue);
 
 	void SetVerticalSway(const float AxisValue);
 
 	void ProcessSwayRotation(const float DeltaTime) const;
 
+	// Death
+protected:
+	virtual void OnDeath(AController* DeathInstigator, AActor* DeathCauser, const UDamageType* DamageType) override;
 };

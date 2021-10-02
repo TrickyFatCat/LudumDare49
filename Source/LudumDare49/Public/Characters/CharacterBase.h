@@ -26,4 +26,7 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UDamageControllerComponent* DamageController = nullptr;
+	
+	UFUNCTION()
+	virtual void OnDeath(AController* DeathInstigator, AActor* DeathCauser, const UDamageType* DamageType);
 };

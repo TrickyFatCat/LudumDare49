@@ -4,6 +4,7 @@
 #include "Characters/PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "Components/WeaponComponent.h"
+#include "Core/Session/SessionGameMode.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -93,4 +94,19 @@ void APlayerCharacter::ProcessSwayRotation(const float DeltaTime) const
 	                                                DeltaTime,
 	                                                SwaySpeed);
 	WeaponScene->SetRelativeRotation(FinalRotation);
+}
+
+void APlayerCharacter::OnDeath(AController* DeathInstigator, AActor* DeathCauser, const UDamageType* Damage)
+{
+	Super::OnDeath(DeathInstigator, DeathCauser, Damage);
+	if (GetWorld())
+	{
+		ASessionGameMode* SessionGameMode = Cast<ASessionGameMode>(GetWorld()->GetAuthGameMode());
+
+		if (SessionGameMode)
+		{
+			SessionGameMode->FinishSession();
+		}
+	}
+	WeaponComponent->StopShooting();
 }
