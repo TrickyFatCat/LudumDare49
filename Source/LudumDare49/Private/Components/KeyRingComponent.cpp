@@ -16,7 +16,7 @@ void UKeyRingComponent::BeginPlay()
 
 void UKeyRingComponent::AddKey(const EKey Key)
 {
-	if (KeyRing.Contains(Key)) return;
+	if (HasKey(Key)) return;
 
 	KeyRing[Key] = true;
 }
