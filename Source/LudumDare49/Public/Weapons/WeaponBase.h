@@ -7,6 +7,8 @@
 #include "Weapons/WeaponCoreTypes.h"
 #include "WeaponBase.generated.h"
 
+class USoundCue;
+
 UCLASS()
 class LUDUMDARE49_API AWeaponBase : public AActor
 {
@@ -108,4 +110,12 @@ private:
 	FVector InitialLocation = FVector::ZeroVector;
 
 	void CalculateRecoil(const float DeltaTime);
+
+	// Sounds
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon|Sound")
+	USoundCue* ShotSound = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon|Sound")
+	USoundCue* EmptySound = nullptr;
 };

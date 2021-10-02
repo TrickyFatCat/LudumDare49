@@ -7,6 +7,7 @@
 #include "Core/ProjectUtils.h"
 #include "Kismet/GameplayStatics.h"
 #include "Weapons/ProjectileBase.h"
+#include "Sound/SoundCue.h"
 
 
 AWeaponBase::AWeaponBase()
@@ -137,6 +138,7 @@ void AWeaponBase::MakeShot()
 {
 	if (AmmoData.AmmoCurrent <= 0)
 	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), EmptySound, GetActorLocation());
 		StopShooting();
 		return;
 	}
@@ -186,6 +188,7 @@ void AWeaponBase::MakeShot()
 	RootComponent->AddLocalRotation(FRotator(RecoilData.RecoilRotationOffset, 0.f, 0.f));
 	RootComponent->AddLocalOffset(FVector(-RecoilData.RecoilLocationOffset, 0.f, 0.f));
 
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShotSound, WeaponMuzzle->GetComponentLocation());
 	OnWeaponShot();
 	OnMakeShot.Broadcast();
 	DecreaseAmmo(WeaponData.ShotCost);
