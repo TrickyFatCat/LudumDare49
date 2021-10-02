@@ -122,11 +122,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	bool CanShoot() const
 	{
-		return CurrentWeapon->CanShoot() && !bIsReloading && !bIsEquipping;
+		return CurrentWeapon->CanShoot() && !bIsEquipping;
 	}
-
-	UFUNCTION(BlueprintGetter, Category="Weapon")
-	bool GetIsReloading() const { return bIsReloading; }
 
 	UFUNCTION(BlueprintGetter, Category="Weapon")
 	bool GetIsEquipping() const { return bIsEquipping; }
@@ -136,9 +133,6 @@ public:
 
 protected:
 private:
-	UPROPERTY(BlueprintGetter=GetIsReloading, Category="Weapon")
-	bool bIsReloading = false;
-
 	UPROPERTY(BlueprintGetter=GetIsEquipping, Category="Weapon")
 	bool bIsEquipping = false;
 };

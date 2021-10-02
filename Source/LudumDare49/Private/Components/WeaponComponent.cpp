@@ -9,7 +9,7 @@ UWeaponComponent::UWeaponComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 
-	EquipAnimationTimeline = CreateDefaultSubobject<UTimelineComponent>("PullAnimationTimeline");
+	EquipAnimationTimeline = CreateDefaultSubobject<UTimelineComponent>("EquipAnimationTimeline");
 }
 
 
@@ -22,11 +22,11 @@ void UWeaponComponent::BeginPlay()
 	if (EquipAnimationCurve)
 	{
 		FOnTimelineFloat AnimationProgress;
-		AnimationProgress.BindUFunction(this, FName("SetPullProgress"));
+		AnimationProgress.BindUFunction(this, FName("AnimateWeaponEquip"));
 		EquipAnimationTimeline->AddInterpFloat(EquipAnimationCurve, AnimationProgress);
 
 		FOnTimelineEvent AnimationFinished;
-		AnimationFinished.BindUFunction(this, FName("OnPullFinished"));
+		AnimationFinished.BindUFunction(this, FName("OnEquipAnimationFinished"));
 		EquipAnimationTimeline->SetTimelineFinishedFunc(AnimationFinished);
 	}
 }
@@ -54,7 +54,7 @@ void UWeaponComponent::SpawnWeapons(USceneComponent* WeaponScene)
 		if (!Weapon) continue;
 
 		Weapon->SetOwner(GetOwner());
-		Weapons.Add(FWeaponInventoryData{Weapon, false});
+		Weapons.Add(FWeaponInventoryData{Weapon, true});
 		FAttachmentTransformRules AttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
 		Weapon->AttachToComponent(WeaponScene, AttachmentTransformRules);
 		Weapon->SetActorHiddenInGame(true);
@@ -72,7 +72,7 @@ void UWeaponComponent::GetCurrentWeaponData(FWeaponData& WeaponData) const
 
 void UWeaponComponent::EquipNextWeapon()
 {
-	if (bIsEquipping || bIsReloading) return;
+	if (bIsEquipping) return;
 
 	PreviousWeaponIndex = CurrentWeaponIndex;
 
@@ -90,7 +90,7 @@ void UWeaponComponent::EquipNextWeapon()
 
 void UWeaponComponent::EquipPreviousWeapon()
 {
-	if (bIsEquipping || bIsReloading) return;
+	if (bIsEquipping) return;
 
 	PreviousWeaponIndex = CurrentWeaponIndex;
 
@@ -140,7 +140,7 @@ bool UWeaponComponent::UnlockWeapon(TSubclassOf<AWeaponBase> WeaponClass)
 		InventoryData.bIsAvailable = true;
 
 		// if (!bIsReloading && !bIsEquipping && !RecoilTimeline->IsPlaying())
-		if (!bIsReloading && !bIsEquipping)
+		if (!bIsEquipping)
 		{
 			PreviousWeaponIndex = CurrentWeaponIndex;
 			CurrentWeaponIndex = i;
