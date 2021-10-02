@@ -24,6 +24,8 @@ protected:
 	UPROPERTY(meta=(BindWidget))
 	UButton* Button_NextLevel = nullptr;
 	
+	UFUNCTION(BlueprintPure, Category="UI")
+	bool IsPlayerDead() const;
 private:
 	virtual void OnTransitionScreenShowed() override;
 	
@@ -31,5 +33,7 @@ private:
 	void OnNextLevelPressed();
 
 	void OpenNextLevel() const;
+
+
 
 };

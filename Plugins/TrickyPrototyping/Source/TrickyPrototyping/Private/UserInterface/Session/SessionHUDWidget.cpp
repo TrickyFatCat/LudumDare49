@@ -13,14 +13,7 @@ void USessionHUDWidget::NativeOnInitialized()
 
 	if (TransitionScreen)
 	{
-		 if (GetSessionGameMode() && GetSessionGameMode()->GetPreparationTimerDuration() > 0.f)
-		 {
-			 TransitionScreen->Hide();
-		 }
-		else
-		{
-			TransitionScreen->SetVisibility(ESlateVisibility::Hidden);
-		}
+		TransitionScreen->Hide();
 	}
 }
 

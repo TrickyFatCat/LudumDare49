@@ -192,9 +192,9 @@ void AWeaponBase::MakeShot()
 	RootComponent->AddLocalOffset(FVector(-RecoilData.RecoilLocationOffset, 0.f, 0.f));
 
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShotSound, WeaponMuzzle->GetComponentLocation());
+	DecreaseAmmo(WeaponData.ShotCost);
 	OnWeaponShot();
 	OnMakeShot.Broadcast();
-	DecreaseAmmo(WeaponData.ShotCost);
 }
 
 void AWeaponBase::IncreaseAmmo(const int32 Amount)

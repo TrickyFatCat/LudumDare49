@@ -2,10 +2,15 @@
 
 
 #include "Characters/PlayerCharacter.h"
+
 #include "Camera/CameraComponent.h"
+#include "Components/DamageControllerComponent.h"
 #include "Components/WeaponComponent.h"
 #include "Core/Session/SessionGameMode.h"
 #include "Components/KeyRingComponent.h"
+#include "Components/InteractionQueueComponent.h"
+#include "Components/WidgetComponent.h"
+#include "UI/CounterUserWidget.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -17,6 +22,43 @@ APlayerCharacter::APlayerCharacter()
 
 	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 	KeyRingComponent = CreateDefaultSubobject<UKeyRingComponent>("KeyRingComponent");
+	InteractionQueue = CreateDefaultSubobject<UInteractionQueueComponent>("InteractionQueue");
+
+	ArmorIcon = CreateDefaultSubobject<UStaticMeshComponent>("ArmorIcon");
+	ArmorIcon->SetupAttachment(PlayerCamera);
+
+	HealthIcon = CreateDefaultSubobject<UStaticMeshComponent>("HealthIcon");
+	HealthIcon->SetupAttachment(PlayerCamera);
+
+	WeaponIcon = CreateDefaultSubobject<UStaticMeshComponent>("WeaponIcon");
+	WeaponIcon->SetupAttachment(PlayerCamera);
+
+	KeyBlue = CreateDefaultSubobject<UStaticMeshComponent>("KeyBlue");
+	KeyBlue->SetupAttachment(PlayerCamera);
+	KeyBlue->SetHiddenInGame(true);
+	
+	KeyGreen = CreateDefaultSubobject<UStaticMeshComponent>("KeyGreen");
+	KeyGreen->SetupAttachment(PlayerCamera);
+	KeyGreen->SetHiddenInGame(true);
+	
+	KeyYellow = CreateDefaultSubobject<UStaticMeshComponent>("KeyYellow");
+	KeyYellow->SetupAttachment(PlayerCamera);
+	KeyYellow->SetHiddenInGame(true);
+
+	ArmorWidget = CreateDefaultSubobject<UWidgetComponent>("ArmorWidget");
+	ArmorWidget->SetupAttachment(ArmorIcon);
+	ArmorWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	ArmorWidget->SetDrawAtDesiredSize(true);
+
+	HealthWidget = CreateDefaultSubobject<UWidgetComponent>("HealthWidget");
+	HealthWidget->SetupAttachment(HealthIcon);
+	HealthWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	HealthWidget->SetDrawAtDesiredSize(true);
+
+	WeaponWidget = CreateDefaultSubobject<UWidgetComponent>("WeaponWidget");
+	WeaponWidget->SetupAttachment(WeaponIcon);
+	WeaponWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	WeaponWidget->SetDrawAtDesiredSize(true);
 }
 
 void APlayerCharacter::BeginPlay()
@@ -25,6 +67,19 @@ void APlayerCharacter::BeginPlay()
 
 	InitialWeaponRotation = WeaponScene->GetRelativeRotation();
 	WeaponComponent->SpawnWeapons(WeaponScene);
+
+	DamageController->OnHealthChanged.AddDynamic(this, &APlayerCharacter::UpdateHealthCount);
+	DamageController->OnArmorChanged.AddDynamic(this, &APlayerCharacter::UpdateArmorCount);
+
+	WeaponComponent->OnWeaponShot.AddDynamic(this, &APlayerCharacter::UpdateWeaponCount);
+	WeaponComponent->OnWeaponEquipped.AddDynamic(this, &APlayerCharacter::OnWeaponEquipped);
+	WeaponComponent->OnWeaponAmmoRestored.AddDynamic(this, &APlayerCharacter::OnWeaponAmmoRestored);
+
+	KeyRingComponent->OnKeyUnlocked.AddDynamic(this, &APlayerCharacter::OnKeyUnlocked);
+
+	UpdateArmorCount(DamageController->GetArmor(), 0);
+	UpdateHealthCount(DamageController->GetHealth(), 0);
+	UpdateWeaponCount();
 }
 
 void APlayerCharacter::Tick(float DeltaSeconds)
@@ -60,6 +115,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	                                 &UWeaponComponent::EquipPreviousWeapon);
 	PlayerInputComponent->BindAction("Shoot", IE_Pressed, WeaponComponent, &UWeaponComponent::StartShooting);
 	PlayerInputComponent->BindAction("Shoot", IE_Released, WeaponComponent, &UWeaponComponent::StopShooting);
+
+	// Interaction
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::StartInteraction);
 }
 
 void APlayerCharacter::MoveForward(const float AxisValue)
@@ -111,4 +169,64 @@ void APlayerCharacter::OnDeath(AController* DeathInstigator, AActor* DeathCauser
 		}
 	}
 	WeaponComponent->StopShooting();
+}
+
+void APlayerCharacter::StartInteraction()
+{
+	InteractionQueue->Interact();
+}
+
+void APlayerCharacter::UpdateArmorCount(float Armor, float DeltaArmor)
+{
+	UCounterUserWidget* Counter = Cast<UCounterUserWidget>(ArmorWidget->GetUserWidgetObject());
+
+	if (!Counter) return;
+
+	Counter->SetCounter(FMath::CeilToInt(Armor));
+}
+
+void APlayerCharacter::UpdateHealthCount(float Health, float DeltaHealth)
+{
+	UCounterUserWidget* Counter = Cast<UCounterUserWidget>(HealthWidget->GetUserWidgetObject());
+
+	if (!Counter) return;
+
+	Counter->SetCounter(FMath::CeilToInt(Health));
+}
+
+void APlayerCharacter::UpdateWeaponCount()
+{
+	UCounterUserWidget* Counter = Cast<UCounterUserWidget>(WeaponWidget->GetUserWidgetObject());
+
+	if (!Counter) return;
+
+	Counter->SetCounter(WeaponComponent->GetCurrentAmmo());
+}
+
+void APlayerCharacter::OnWeaponEquipped(AWeaponBase* NewWeapon)
+{
+	UpdateWeaponCount();
+}
+
+void APlayerCharacter::OnKeyUnlocked(EKey NewKey)
+{
+	switch (NewKey)
+	{
+	case (EKey::Blue):
+		KeyBlue->SetHiddenInGame(false);
+		break;
+	case (EKey::Green):
+		KeyGreen->SetHiddenInGame(false);
+		break;
+	case (EKey::Yellow):
+		KeyYellow->SetHiddenInGame(false);
+		break;
+	}
+}
+
+void APlayerCharacter::OnWeaponAmmoRestored(AWeaponBase* Weapon)
+{
+	if (!Weapon->IsA(WeaponComponent->GetCurrentWeapon()->GetClass())) return;
+
+	UpdateWeaponCount();
 }

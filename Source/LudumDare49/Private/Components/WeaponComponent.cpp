@@ -172,6 +172,7 @@ bool UWeaponComponent::RestoreAmmo(TSubclassOf<AWeaponBase> WeaponClass, const i
 		}
 
 		InventoryData.Weapon->IncreaseAmmo(Amount);
+		OnWeaponAmmoRestored.Broadcast(InventoryData.Weapon);
 		Result = true;
 		break;
 	}
@@ -191,10 +192,10 @@ void UWeaponComponent::EquipWeapon(const int32 WeaponIndex)
 
 	CurrentWeapon = Weapons[WeaponIndex].Weapon;
 	CurrentWeapon->SetActorHiddenInGame(false);
-	// RecoilTimeline->SetPlayRate(1.f / (FMath::Min(RecoilDuration, CurrentWeapon->GetTimeBetweenShots()) * 0.5f));
-
+	
 	FWeaponData WeaponData;
 	CurrentWeapon->GetWeaponData(WeaponData);
+	OnWeaponEquipped.Broadcast(CurrentWeapon);
 }
 
 void UWeaponComponent::OnWeaponMakeShot()
@@ -258,4 +259,11 @@ void UWeaponComponent::StartEquipAnimation()
 void UWeaponComponent::GetCurrentWeaponAmmo(FWeaponAmmoData& AmmoData) const
 {
 	AmmoData = CurrentWeapon->GetAmmoData();
+}
+
+int32 UWeaponComponent::GetCurrentAmmo() const
+{
+	FWeaponAmmoData AmmoData;
+	GetCurrentWeaponAmmo(AmmoData);
+	return AmmoData.AmmoCurrent;
 }

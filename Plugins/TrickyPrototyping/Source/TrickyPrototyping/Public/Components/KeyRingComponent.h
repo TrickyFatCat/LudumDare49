@@ -14,6 +14,8 @@ enum class EKey : uint8
 	Yellow
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKeyUnlockedSignature, EKey, Key);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TRICKYPROTOTYPING_API UKeyRingComponent : public UActorComponent
 {
@@ -26,6 +28,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UPROPERTY(BlueprintAssignable)
+	FOnKeyUnlockedSignature OnKeyUnlocked;
+	
 	void AddKey(const EKey Key);
 
 	bool HasKey(const EKey Key);

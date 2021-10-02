@@ -58,6 +58,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="Weapon")
 	FOnWeaponShotSignature OnWeaponShot;
 
+	UPROPERTY(BlueprintAssignable, Category="Weapon")
+	FOnWeaponRestoreAmmoSignature OnWeaponAmmoRestored;
+
 	void EquipNextWeapon();
 
 	void EquipPreviousWeapon();
@@ -87,6 +90,9 @@ private:
 
 	// Equip animation
 public:
+	UPROPERTY(BlueprintAssignable)
+	FOnEquipWeaponSignature OnWeaponEquipped;
+	
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animation|Equip", meta=(AllowPrivateAccess="true"))
 	UCurveFloat* EquipAnimationCurve = nullptr;
@@ -130,6 +136,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	void GetCurrentWeaponAmmo(FWeaponAmmoData& AmmoData) const;
+
+	UFUNCTION()
+	int32 GetCurrentAmmo() const;
 
 protected:
 private:
