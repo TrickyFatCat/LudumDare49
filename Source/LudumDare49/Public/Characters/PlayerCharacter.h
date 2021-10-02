@@ -35,8 +35,27 @@ public:
 	USceneComponent* WeaponScene = nullptr;
 
 	// Movement
-	protected:
+protected:
 	void MoveForward(const float AxisValue);
 
 	void MoveRight(const float AxisValue);
+
+	// Weapon sway
+
+	private:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Animation", meta=(AllowPrivateAccess="true"))
+	float SwayPower = 3.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Animation", meta=(AllowPrivateAccess="true"))
+	float SwaySpeed = 75.f;
+
+	UPROPERTY(VisibleInstanceOnly)
+	FRotator InitialWeaponRotation = FRotator::ZeroRotator;
+	
+	void SetHorizontalSway(const float AxisValue);
+
+	void SetVerticalSway(const float AxisValue);
+
+	void ProcessSwayRotation(const float DeltaTime) const;
+
 };

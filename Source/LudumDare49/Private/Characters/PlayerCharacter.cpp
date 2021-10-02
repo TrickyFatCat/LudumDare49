@@ -16,11 +16,15 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	InitialWeaponRotation = WeaponScene->GetRelativeRotation();
 }
 
 void APlayerCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+
+	ProcessSwayRotation(DeltaSeconds);
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -35,6 +39,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	// Aiming
 	PlayerInputComponent->BindAxis("LookUp", this, &APlayerCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookRight", this, &APlayerCharacter::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &APlayerCharacter::SetVerticalSway);
+	PlayerInputComponent->BindAxis("LookRight", this, &APlayerCharacter::SetHorizontalSway);
 }
 
 void APlayerCharacter::MoveForward(const float AxisValue)
@@ -45,4 +51,30 @@ void APlayerCharacter::MoveForward(const float AxisValue)
 void APlayerCharacter::MoveRight(const float AxisValue)
 {
 	AddMovementInput(GetActorRightVector(), AxisValue);
+}
+
+void APlayerCharacter::SetHorizontalSway(const float AxisValue)
+{
+	FRotator FinalRotation = WeaponScene->GetRelativeRotation();
+	FinalRotation.Yaw = FinalRotation.Yaw - AxisValue * SwayPower;
+	WeaponScene->SetRelativeRotation(FinalRotation);
+}
+
+void APlayerCharacter::SetVerticalSway(const float AxisValue)
+{
+	FRotator FinalRotation = WeaponScene->GetRelativeRotation();
+	FinalRotation.Roll = FinalRotation.Roll - AxisValue * SwayPower;
+	WeaponScene->SetRelativeRotation(FinalRotation);
+}
+
+void APlayerCharacter::ProcessSwayRotation(const float DeltaTime) const
+{
+	const FRotator TargetRotation = FRotator(WeaponScene->GetRelativeRotation().Pitch,
+	                                         InitialWeaponRotation.Yaw,
+	                                         InitialWeaponRotation.Roll);
+	const FRotator FinalRotation = FMath::RInterpTo(WeaponScene->GetRelativeRotation(),
+	                                                TargetRotation,
+	                                                DeltaTime,
+	                                                SwaySpeed);
+	WeaponScene->SetRelativeRotation(FinalRotation);
 }
