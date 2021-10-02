@@ -18,6 +18,7 @@ AExplosiveBarrel::AExplosiveBarrel()
 void AExplosiveBarrel::BeginPlay()
 {
 	Super::BeginPlay();
+	OnTakeAnyDamage.AddDynamic(this, &AExplosiveBarrel::OnTakeDamage);
 }
 
 void AExplosiveBarrel::Tick(float DeltaTime)
