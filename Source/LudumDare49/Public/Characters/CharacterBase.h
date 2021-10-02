@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "CharacterBase.generated.h"
 
+class UDamageControllerComponent;
+
 UCLASS()
 class LUDUMDARE49_API ACharacterBase : public ACharacter
 {
@@ -21,4 +23,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UDamageControllerComponent* DamageController = nullptr;
 };

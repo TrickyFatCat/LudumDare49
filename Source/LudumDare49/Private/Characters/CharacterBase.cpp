@@ -8,6 +8,7 @@ ACharacterBase::ACharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	DamageController = CreateDefaultSubobject<UDamageControllerComponent>("DamageController");
 }
 
 void ACharacterBase::BeginPlay()
