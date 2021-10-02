@@ -28,11 +28,15 @@ void AWeaponBase::BeginPlay()
 	Super::BeginPlay();
 	TimeBetweenShots = WeaponData.RateOfFire <= 0.f ? 1.f : 1.f / WeaponData.RateOfFire;
 	AmmoData.AmmoCurrent = AmmoData.AmmoMax;
+	InitialRotation = GetRootComponent()->GetRelativeRotation();
+	InitialLocation = GetRootComponent()->GetRelativeLocation();
 }
 
 void AWeaponBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	CalculateRecoil(DeltaTime);
 }
 
 void AWeaponBase::GetWeaponData(FWeaponData& Data) const
@@ -179,6 +183,9 @@ void AWeaponBase::MakeShot()
 		OnBulletShot(HitResult, TraceStart, HitResult.bBlockingHit ? HitResult.ImpactPoint : TraceEnd);
 	}
 
+	RootComponent->AddLocalRotation(FRotator(RecoilData.RecoilRotationOffset, 0.f, 0.f));
+	RootComponent->AddLocalOffset(FVector(-RecoilData.RecoilLocationOffset, 0.f, 0.f));
+
 	OnWeaponShot();
 	OnMakeShot.Broadcast();
 	DecreaseAmmo(WeaponData.ShotCost);
@@ -198,4 +205,22 @@ void AWeaponBase::DecreaseAmmo(const int32 Amount)
 
 	AmmoData.AmmoCurrent -= Amount;
 	AmmoData.AmmoCurrent = FMath::Max(AmmoData.AmmoCurrent, 0);
+}
+
+void AWeaponBase::CalculateRecoil(const float DeltaTime)
+{
+	const FRotator TargetRotation = FRotator(InitialRotation.Pitch,
+	                                         GetRootComponent()->GetRelativeRotation().Yaw,
+	                                         GetRootComponent()->GetRelativeRotation().Roll);
+	const FRotator FinalRotation = FMath::RInterpTo(RootComponent->GetRelativeRotation(),
+	                                                TargetRotation,
+	                                                DeltaTime,
+	                                                RecoilData.RecoilSpeed);
+	RootComponent->SetRelativeRotation(FinalRotation);
+
+	const FVector FinalLocation = FMath::VInterpTo(RootComponent->GetRelativeLocation(),
+	                                               InitialLocation,
+	                                               DeltaTime,
+	                                               RecoilData.RecoilSpeed);
+	RootComponent->SetRelativeLocation(FinalLocation);
 }

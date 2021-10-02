@@ -37,10 +37,13 @@ struct FRecoilData
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Recoil", meta=(ClampMin="0"))
-	float MeshRecoilYPower = 5.f;
+	float RecoilLocationOffset = 10.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Recoil", meta=(ClampMin="0"))
-	float MeshRecoilRollPower = 5.f;
+	float RecoilRotationOffset = 20.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Recoil", meta=(ClampMin="0"))
+	float RecoilSpeed = 30.f;
 };
 
 USTRUCT(BlueprintType)

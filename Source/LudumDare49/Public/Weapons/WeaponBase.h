@@ -27,6 +27,7 @@ public:
 	void GetWeaponData(FWeaponData& Data) const;
 
 
+
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	USceneComponent* WeaponRoot = nullptr;
@@ -96,4 +97,15 @@ protected:
 	FWeaponAmmoData AmmoData;
 
 	void DecreaseAmmo(const int32 Amount);
+
+	// Recoil
+private:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Weapon", meta=(AllowPrivateAccess="true"))
+	FRecoilData RecoilData;
+	
+	FRotator InitialRotation = FRotator::ZeroRotator;
+	
+	FVector InitialLocation = FVector::ZeroVector;
+
+	void CalculateRecoil(const float DeltaTime);
 };
