@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Weapons/ProjectileBase.h"
 #include "Sound/SoundCue.h"
+#include "Weapons/WeaponFxComponent.h"
 
 
 AWeaponBase::AWeaponBase()
@@ -22,6 +23,8 @@ AWeaponBase::AWeaponBase()
 
 	WeaponMuzzle = CreateDefaultSubobject<USceneComponent>("WeaponMuzzle");
 	WeaponMuzzle->SetupAttachment(WeaponMesh);
+
+	WeaponFXComponent = CreateDefaultSubobject<UWeaponFxComponent>("WeaponFXComponent");
 }
 
 void AWeaponBase::BeginPlay()
@@ -164,7 +167,7 @@ void AWeaponBase::MakeShot()
 			if (HitResult.bBlockingHit)
 			{
 				ApplyDamage(HitResult, Direction);
-				// WeaponFXComponent->PlayImpactFX(HitResult);
+				WeaponFXComponent->PlayImpactFX(HitResult);
 			}
 		}
 		else

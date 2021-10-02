@@ -8,6 +8,7 @@
 #include "WeaponBase.generated.h"
 
 class USoundCue;
+class UWeaponFxComponent;
 
 UCLASS()
 class LUDUMDARE49_API AWeaponBase : public AActor
@@ -39,6 +40,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	USceneComponent* WeaponMuzzle = nullptr;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
+	UWeaponFxComponent* WeaponFXComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category="Weapon", meta=(AllowPrivateAccess="true"))
 	FWeaponData WeaponData;
