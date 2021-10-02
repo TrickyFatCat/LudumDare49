@@ -21,6 +21,10 @@ void UDamageControllerComponent::BeginPlay()
 	HealthObject->SetResourceData(HealthData);
 	HealthObject->OnValueChanged.AddUObject(this, &UDamageControllerComponent::BroadcastOnHealthChanged);
 
+	ArmorObject = NewObject<UEntityResource>(this, TEXT("ArmorObject"));
+	ArmorObject->SetResourceData(ArmorData);
+	ArmorObject->OnValueChanged.AddUObject(this, &UDamageControllerComponent::BroadcastOnArmorChanged);
+	
 	AActor* ComponentOwner = GetOwner();
 
 	if (ComponentOwner)
