@@ -4,6 +4,8 @@
 #include "Components/DamageControllerComponent.h"
 #include "Objects/EntityResource.h"
 #include "GameFramework/Character.h"
+#include "Perception/AISense_Damage.h"
+#include "GameFramework/Controller.h"
 
 UDamageControllerComponent::UDamageControllerComponent()
 {
@@ -63,6 +65,51 @@ void UDamageControllerComponent::BroadcastOnHealthChanged(const float NewHealth,
 	OnHealthChanged.Broadcast(NewHealth, DeltaHealth);
 }
 
+void UDamageControllerComponent::DecreaseArmor(const float Amount, AController* Instigator)
+{
+	if (Amount <= 0.f || GetIsDead()) return;
+
+	ArmorObject->DecreaseValue(Amount);
+
+	if (GetIsDead())
+	{
+		ArmorObject->SetAutoIncreaseEnabled(false);
+	}
+}
+
+void UDamageControllerComponent::IncreaseArmor(const float Amount, const bool bClampToMax)
+{
+	if (Amount <= 0.f || GetIsDead()) return;
+
+	ArmorObject->IncreaseValue(Amount, bClampToMax);
+}
+
+void UDamageControllerComponent::DecreaseMaxArmor(const float Amount, const bool bClampCurrentArmor)
+{
+	if (Amount <= 0.f) return;
+
+	ArmorObject->DecreaseValueMax(Amount, bClampCurrentArmor);
+}
+
+void UDamageControllerComponent::IncreaseMaxArmor(const float Amount, const bool bClampCurrentArmor)
+{
+	if (Amount <= 0.f) return;
+
+	ArmorObject->IncreaseValueMax(Amount, bClampCurrentArmor);
+}
+
+void UDamageControllerComponent::BroadcastOnArmorChanged(const float NewArmor, const float DeltaArmor)
+{
+	OnArmorChanged.Broadcast(NewArmor, DeltaArmor);
+}
+
+void UDamageControllerComponent::SetArmorModifier(const float Value)
+{
+	if (Value < 0.f) return;
+
+	ArmorModifier = Value;
+}
+
 
 void UDamageControllerComponent::SetGeneralDamageModifier(const float NewModifier)
 {
@@ -84,17 +131,41 @@ float UDamageControllerComponent::GetPointDamageModifier(AActor* Actor, const FN
 	return PointDamageModifiers[PhysMat];
 }
 
-void UDamageControllerComponent::CalculateDamage(const float Damage, AActor* DamagedActor, AController* Instigator, AActor* Causer,const UDamageType* DamageType)
+void UDamageControllerComponent::CalculateDamage(const float Damage,
+                                                 AActor* DamagedActor,
+                                                 AController* Instigator,
+                                                 AActor* Causer,
+                                                 const UDamageType* DamageType)
 {
 	if (Damage <= 0.f) return;
 
-	DecreaseHealth(Damage * GeneralDamageModifier);
-	
-	if (GetIsDead())
+	float CurrentDamage = Damage * GeneralDamageModifier;
+
+	if (GetArmor() > 0.f)
 	{
-		HealthObject->SetAutoIncreaseEnabled(false);
-		OnDeath.Broadcast(Instigator, Causer, DamageType);
+		if (GetArmor() < CurrentDamage * ArmorModifier)
+		{
+			CurrentDamage -= GetArmor();
+			DecreaseArmor(GetArmor(), Instigator);
+			DecreaseHealth(CurrentDamage);
+		}
+		else
+		{
+			DecreaseArmor(FMath::CeilToFloat(CurrentDamage * ArmorModifier), Instigator);
+		}
 	}
+	else
+	{
+		DecreaseHealth(Damage * GeneralDamageModifier);
+
+		if (GetIsDead())
+		{
+			HealthObject->SetAutoIncreaseEnabled(false);
+			OnDeath.Broadcast(Instigator, Causer, DamageType);
+		}
+	}
+
+	if (GetIsDead()) return;
 }
 
 void UDamageControllerComponent::OnTakeAnyDamage(AActor* DamageActor,
@@ -116,7 +187,7 @@ void UDamageControllerComponent::OnTakePointDamage(AActor* DamagedActor,
                                                    AActor* DamageCauser)
 {
 	float FinalDamage = Damage;
-	
+
 	if (bUsePointDamageModifier && PointDamageModifiers.Num() > 0)
 	{
 		FinalDamage *= GetPointDamageModifier(DamagedActor, BoneName);
