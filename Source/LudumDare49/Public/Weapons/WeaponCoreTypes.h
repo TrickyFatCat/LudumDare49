@@ -8,15 +8,9 @@ class AWeaponBase;
 class AProjectileBase;
 class USoundCue;
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnWeaponClipEmptySignature, AWeaponBase*);
-
 DECLARE_MULTICAST_DELEGATE(FOnMakeShotSignature)
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponShotSignature);
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnterAdsSignature);
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnExitAdsSignature);
 
 UENUM(BlueprintType)
 enum class EBulletType : uint8
