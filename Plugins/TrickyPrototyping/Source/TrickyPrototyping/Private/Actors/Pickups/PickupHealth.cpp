@@ -11,9 +11,9 @@ bool APickupHealth::ActivatePickup_Implementation(AActor* TargetActor)
 
 	UDamageControllerComponent* DamageController = TargetActor->FindComponentByClass<UDamageControllerComponent>();
 
-	if (!DamageController) return false;
+	if (!DamageController || DamageController->GetIsDead()) return false;
 
-	if (DamageController->GetNormalizedHealth() >= 1.f || DamageController->GetIsDead()) return false;
+	if (DamageController->GetNormalizedHealth() >= 1.f && bClampHealToMaxHealth) return false;
 
 	DamageController->IncreaseHealth(HealPower, bClampHealToMaxHealth);
 	
