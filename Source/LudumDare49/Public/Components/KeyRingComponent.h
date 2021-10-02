@@ -6,8 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "KeyRingComponent.generated.h"
 
-UENUM()
-enum class EKey
+UENUM(BlueprintType)
+enum class EKey : uint8
 {
 	Green,
 	Blue,
