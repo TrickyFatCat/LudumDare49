@@ -2,6 +2,7 @@
 
 
 #include "Characters/PlayerCharacter.h"
+
 #include "Camera/CameraComponent.h"
 #include "Components/DamageControllerComponent.h"
 #include "Components/WeaponComponent.h"
@@ -31,7 +32,19 @@ APlayerCharacter::APlayerCharacter()
 
 	WeaponIcon = CreateDefaultSubobject<UStaticMeshComponent>("WeaponIcon");
 	WeaponIcon->SetupAttachment(PlayerCamera);
+
+	KeyBlue = CreateDefaultSubobject<UStaticMeshComponent>("KeyBlue");
+	KeyBlue->SetupAttachment(PlayerCamera);
+	KeyBlue->SetHiddenInGame(true);
 	
+	KeyGreen = CreateDefaultSubobject<UStaticMeshComponent>("KeyGreen");
+	KeyGreen->SetupAttachment(PlayerCamera);
+	KeyGreen->SetHiddenInGame(true);
+	
+	KeyYellow = CreateDefaultSubobject<UStaticMeshComponent>("KeyYellow");
+	KeyYellow->SetupAttachment(PlayerCamera);
+	KeyYellow->SetHiddenInGame(true);
+
 	ArmorWidget = CreateDefaultSubobject<UWidgetComponent>("ArmorWidget");
 	ArmorWidget->SetupAttachment(ArmorIcon);
 	ArmorWidget->SetWidgetSpace(EWidgetSpace::Screen);
@@ -60,6 +73,8 @@ void APlayerCharacter::BeginPlay()
 
 	WeaponComponent->OnWeaponShot.AddDynamic(this, &APlayerCharacter::UpdateWeaponCount);
 	WeaponComponent->OnWeaponEquipped.AddDynamic(this, &APlayerCharacter::OnWeaponEquipped);
+
+	KeyRingComponent->OnKeyUnlocked.AddDynamic(this, &APlayerCharacter::OnKeyUnlocked);
 
 	UpdateArmorCount(DamageController->GetArmor(), 0);
 	UpdateHealthCount(DamageController->GetHealth(), 0);
@@ -190,4 +205,20 @@ void APlayerCharacter::UpdateWeaponCount()
 void APlayerCharacter::OnWeaponEquipped(AWeaponBase* NewWeapon)
 {
 	UpdateWeaponCount();
+}
+
+void APlayerCharacter::OnKeyUnlocked(EKey NewKey)
+{
+	switch (NewKey)
+	{
+	case (EKey::Blue):
+		KeyBlue->SetHiddenInGame(false);
+		break;
+	case (EKey::Green):
+		KeyGreen->SetHiddenInGame(false);
+		break;
+	case (EKey::Yellow):
+		KeyYellow->SetHiddenInGame(false);
+		break;
+	}
 }

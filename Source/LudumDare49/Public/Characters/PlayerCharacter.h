@@ -5,11 +5,11 @@
 #include "CoreMinimal.h"
 #include "Characters/CharacterBase.h"
 #include "Weapons/WeaponBase.h"
+#include "Components/KeyRingComponent.h"
 #include "PlayerCharacter.generated.h"
 
 class UCameraComponent;
 class UWeaponComponent;
-class UKeyRingComponent;
 class UInteractionQueueComponent;
 class UWidgetComponent;
 
@@ -87,10 +87,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UStaticMeshComponent* HealthIcon = nullptr;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UStaticMeshComponent* WeaponIcon = nullptr;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UWidgetComponent* ArmorWidget = nullptr;
 
@@ -99,6 +99,15 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UWidgetComponent* WeaponWidget = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UStaticMeshComponent* KeyBlue = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UStaticMeshComponent* KeyGreen = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UStaticMeshComponent* KeyYellow = nullptr;
 	
 	UFUNCTION()
 	void UpdateArmorCount(float Armor, float DeltaArmor);
@@ -111,4 +120,7 @@ protected:
 
 	UFUNCTION()
 	void OnWeaponEquipped(AWeaponBase* NewWeapon);
+
+	UFUNCTION()
+	void OnKeyUnlocked(EKey NewKey);
 };

@@ -19,6 +19,7 @@ void UKeyRingComponent::AddKey(const EKey Key)
 	if (HasKey(Key)) return;
 
 	KeyRing[Key] = true;
+	OnKeyUnlocked.Broadcast(Key);
 }
 
 bool UKeyRingComponent::HasKey(const EKey Key)
