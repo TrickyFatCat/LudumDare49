@@ -123,4 +123,7 @@ protected:
 
 	UFUNCTION()
 	void OnKeyUnlocked(EKey NewKey);
+
+	UFUNCTION()
+	void OnWeaponAmmoRestored(AWeaponBase* Weapon);
 };

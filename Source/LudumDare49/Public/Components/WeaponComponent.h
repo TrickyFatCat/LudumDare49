@@ -58,6 +58,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="Weapon")
 	FOnWeaponShotSignature OnWeaponShot;
 
+	UPROPERTY(BlueprintAssignable, Category="Weapon")
+	FOnWeaponRestoreAmmoSignature OnWeaponAmmoRestored;
+
 	void EquipNextWeapon();
 
 	void EquipPreviousWeapon();

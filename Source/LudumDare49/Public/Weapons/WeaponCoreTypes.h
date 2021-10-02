@@ -14,6 +14,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponShotSignature);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEquipWeaponSignature, AWeaponBase*, Weapon);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponRestoreAmmoSignature, AWeaponBase*, Weapon);
+
 UENUM(BlueprintType)
 enum class EBulletType : uint8
 {

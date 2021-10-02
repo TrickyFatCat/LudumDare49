@@ -73,6 +73,7 @@ void APlayerCharacter::BeginPlay()
 
 	WeaponComponent->OnWeaponShot.AddDynamic(this, &APlayerCharacter::UpdateWeaponCount);
 	WeaponComponent->OnWeaponEquipped.AddDynamic(this, &APlayerCharacter::OnWeaponEquipped);
+	WeaponComponent->OnWeaponAmmoRestored.AddDynamic(this, &APlayerCharacter::OnWeaponAmmoRestored);
 
 	KeyRingComponent->OnKeyUnlocked.AddDynamic(this, &APlayerCharacter::OnKeyUnlocked);
 
@@ -221,4 +222,11 @@ void APlayerCharacter::OnKeyUnlocked(EKey NewKey)
 		KeyYellow->SetHiddenInGame(false);
 		break;
 	}
+}
+
+void APlayerCharacter::OnWeaponAmmoRestored(AWeaponBase* Weapon)
+{
+	if (!Weapon->IsA(WeaponComponent->GetCurrentWeapon()->GetClass())) return;
+
+	UpdateWeaponCount();
 }

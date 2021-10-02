@@ -172,6 +172,7 @@ bool UWeaponComponent::RestoreAmmo(TSubclassOf<AWeaponBase> WeaponClass, const i
 		}
 
 		InventoryData.Weapon->IncreaseAmmo(Amount);
+		OnWeaponAmmoRestored.Broadcast(InventoryData.Weapon);
 		Result = true;
 		break;
 	}
