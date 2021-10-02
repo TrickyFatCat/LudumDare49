@@ -10,6 +10,8 @@ class USoundCue;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnWeaponClipEmptySignature, AWeaponBase*);
 
+DECLARE_MULTICAST_DELEGATE(FOnMakeShotSignature)
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponShotSignature);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnterAdsSignature);
@@ -101,22 +103,13 @@ struct FWeaponAmmoData
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ammo")
-	bool bIsClipInfinite = false;
+	bool bIsAmmoInfinite = false;
 
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category="Ammo")
-	int32 ClipAmmoCurrent = 100;
+	int32 AmmoCurrent = 300;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ammo")
-	int32 ClipAmmoMax = 100;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ammo")
-	bool bIsStorageInfinite = false;
-
-	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category="Ammo")
-	int32 StorageAmmoCurrent = 300;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ammo")
-	int32 StorageAmmoMax = 300;
+	int32 AmmoMax = 300;
 };
 
 USTRUCT(BlueprintType)
