@@ -277,6 +277,8 @@ void AInteractiveActorBase::Open()
 {
 	if (IsStateCurrent(EInteractiveActorState::Opened) || !CanStartAnimation()) return;
 
+	if (IsStateCurrent(EInteractiveActorState::Locked) || IsStateCurrent(EInteractiveActorState::Disabled)) return;
+
 	if (CanBeReversed() && StateTarget == EInteractiveActorState::Closed)
 	{
 		ReverseAnimation();
@@ -297,6 +299,8 @@ void AInteractiveActorBase::Open()
 void AInteractiveActorBase::Close()
 {
 	if (IsStateCurrent(EInteractiveActorState::Closed) || !CanStartAnimation()) return;
+	
+	if (IsStateCurrent(EInteractiveActorState::Locked) || IsStateCurrent(EInteractiveActorState::Disabled)) return;
 
 	if (CanBeReversed() && StateTarget == EInteractiveActorState::Opened)
 	{

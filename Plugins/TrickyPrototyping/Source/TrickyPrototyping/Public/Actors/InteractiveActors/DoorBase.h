@@ -6,6 +6,8 @@
 #include "Actors/InteractiveActorBase.h"
 #include "DoorBase.generated.h"
 
+class UBaseBoxTriggerComponent;
+
 /**
  * A base door class
  */
@@ -15,10 +17,37 @@ class TRICKYPROTOTYPING_API ADoorBase: public AInteractiveActorBase
 {
 	GENERATED_BODY()
 
+public:
+	ADoorBase();
+
 protected:
 	virtual void BeginPlay() override;
 
 public:
 	virtual void Tick(float DeltaSeconds) override;
 
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UBaseBoxTriggerComponent* DoorTrigger = nullptr;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Door")
+	bool bIsTriggerEnabled = true;
+
+	virtual void Disable() override;
+
+	virtual void Enable() override;
+	
+	UFUNCTION()
+	void OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	                           AActor* OtherActor,
+	                           UPrimitiveComponent* OtherComp,
+	                           int32 OtherBodyIndex,
+	                           bool bFromSweep,
+	                           const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComponent,
+	                         AActor* OtherActor,
+	                         UPrimitiveComponent* OtherComp,
+	                         int32 OtherBodyIndex);
 };
