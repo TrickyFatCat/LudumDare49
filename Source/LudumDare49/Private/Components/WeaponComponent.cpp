@@ -17,9 +17,6 @@ void UWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Weapons[0].bIsAvailable = true;
-	EquipWeapon(CurrentWeaponIndex);
-
 	EquipAnimationTimeline->SetPlayRate(1.f / (EquipDuration * 0.5f));
 
 	if (EquipAnimationCurve)
@@ -63,6 +60,9 @@ void UWeaponComponent::SpawnWeapons(USceneComponent* WeaponScene)
 		Weapon->SetActorHiddenInGame(true);
 		Weapon->OnMakeShot.AddUObject(this, &UWeaponComponent::OnWeaponMakeShot);
 	}
+	
+	Weapons[CurrentWeaponIndex].bIsAvailable = true;
+	EquipWeapon(CurrentWeaponIndex);
 }
 
 void UWeaponComponent::GetCurrentWeaponData(FWeaponData& WeaponData) const
