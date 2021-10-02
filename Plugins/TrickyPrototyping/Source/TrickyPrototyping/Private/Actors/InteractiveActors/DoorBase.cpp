@@ -3,6 +3,7 @@
 
 #include "Actors/InteractiveActors/DoorBase.h"
 #include "Components/TriggerComponents/BaseBoxTriggerComponent.h"
+#include "Components/KeyRingComponent.h"
 
 ADoorBase::ADoorBase()
 {
@@ -32,7 +33,7 @@ void ADoorBase::Disable()
 {
 	Super::Disable();
 
-	DoorTrigger->SetIsEnabled(false);
+	DoorTrigger->SetIsEnabled(false);	
 }
 
 void ADoorBase::Enable()
@@ -50,6 +51,15 @@ void ADoorBase::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
                                       const FHitResult& SweepResult)
 {
 	if (IsStateCurrent(EInteractiveActorState::Opened)) return;
+
+	if (bRequireKey)
+	{
+		UKeyRingComponent* KeyRingComponent = OtherActor->FindComponentByClass<UKeyRingComponent>();
+
+		if (!KeyRingComponent) return;
+
+		if (!KeyRingComponent->HasKey(RequiredKey)) return;
+	}
 
 	Open();
 }

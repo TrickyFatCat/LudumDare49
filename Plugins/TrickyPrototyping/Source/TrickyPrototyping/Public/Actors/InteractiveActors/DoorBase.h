@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Actors/InteractiveActorBase.h"
+#include "Components/KeyRingComponent.h"
 #include "DoorBase.generated.h"
 
 class UBaseBoxTriggerComponent;
@@ -33,6 +34,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Door")
 	bool bIsTriggerEnabled = true;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Door", meta=(EditCondition="bIsTriggerEnabled"))
+	bool bRequireKey = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Door", meta=(EditCondition="bRequireKey"))
+	EKey RequiredKey = EKey::Blue;
+	
 	virtual void Disable() override;
 
 	virtual void Enable() override;
