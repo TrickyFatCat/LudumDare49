@@ -54,7 +54,7 @@ void UWeaponComponent::SpawnWeapons(USceneComponent* WeaponScene)
 		if (!Weapon) continue;
 
 		Weapon->SetOwner(GetOwner());
-		Weapons.Add(FWeaponInventoryData{Weapon, true});
+		Weapons.Add(FWeaponInventoryData{Weapon, false});
 		FAttachmentTransformRules AttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
 		Weapon->AttachToComponent(WeaponScene, AttachmentTransformRules);
 		Weapon->SetActorHiddenInGame(true);
@@ -139,7 +139,6 @@ bool UWeaponComponent::UnlockWeapon(TSubclassOf<AWeaponBase> WeaponClass)
 
 		InventoryData.bIsAvailable = true;
 
-		// if (!bIsReloading && !bIsEquipping && !RecoilTimeline->IsPlaying())
 		if (!bIsEquipping)
 		{
 			PreviousWeaponIndex = CurrentWeaponIndex;
