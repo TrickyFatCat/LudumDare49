@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class UWeaponComponent;
+class UKeyRingComponent;
 
 /**
  * 
@@ -37,6 +38,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UWeaponComponent* WeaponComponent = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UKeyRingComponent* KeyRingComponent = nullptr;
 
 	// Movement
 protected:

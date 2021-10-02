@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/WeaponComponent.h"
 #include "Core/Session/SessionGameMode.h"
+#include "Components/KeyRingComponent.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -15,6 +16,7 @@ APlayerCharacter::APlayerCharacter()
 	WeaponScene->SetupAttachment(PlayerCamera);
 
 	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
+	KeyRingComponent = CreateDefaultSubobject<UKeyRingComponent>("KeyRingComponent");
 }
 
 void APlayerCharacter::BeginPlay()
