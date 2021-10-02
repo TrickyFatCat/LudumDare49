@@ -6,9 +6,7 @@
 
 APickupWeapon::APickupWeapon()
 {
-	WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>("WeaponMesh");
-	WeaponMesh->SetupAttachment(MeshScene);
-	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 }
 
 bool APickupWeapon::ActivatePickup_Implementation(AActor* TargetActor)

@@ -6,9 +6,6 @@
 
 APickupAmmo::APickupAmmo()
 {
-	AmmoCrateMesh = CreateDefaultSubobject<UStaticMeshComponent>("AmmoCrateMesh");
-	AmmoCrateMesh->SetupAttachment(MeshScene);
-	AmmoCrateMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 bool APickupAmmo::ActivatePickup_Implementation(AActor* TargetActor)

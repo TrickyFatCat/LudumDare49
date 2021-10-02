@@ -18,9 +18,6 @@ class LUDUMDARE49_API APickupWeapon : public APickupBase
 public:
 	APickupWeapon();
 private:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Component", meta=(AllowPrivateAccess="true"))
-	UStaticMeshComponent* WeaponMesh = nullptr;
-	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Pickup", meta=(AllowPrivateAccess="true"))
 	TSubclassOf<AWeaponBase> WeaponClass;
 	
