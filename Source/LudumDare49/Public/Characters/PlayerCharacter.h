@@ -9,6 +9,7 @@
 class UCameraComponent;
 class UWeaponComponent;
 class UKeyRingComponent;
+class UInteractionQueueComponent;
 
 /**
  * 
@@ -38,9 +39,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UWeaponComponent* WeaponComponent = nullptr;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UKeyRingComponent* KeyRingComponent = nullptr;
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UInteractionQueueComponent* InteractionQueue = nullptr;
 
 	// Movement
 protected:
@@ -69,4 +73,8 @@ private:
 	// Death
 protected:
 	virtual void OnDeath(AController* DeathInstigator, AActor* DeathCauser, const UDamageType* DamageType) override;
+
+	// Interaction
+private:
+	void StartInteraction();
 };

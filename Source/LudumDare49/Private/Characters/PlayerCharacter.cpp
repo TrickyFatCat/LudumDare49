@@ -6,6 +6,7 @@
 #include "Components/WeaponComponent.h"
 #include "Core/Session/SessionGameMode.h"
 #include "Components/KeyRingComponent.h"
+#include "Components/InteractionQueueComponent.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -17,6 +18,7 @@ APlayerCharacter::APlayerCharacter()
 
 	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 	KeyRingComponent = CreateDefaultSubobject<UKeyRingComponent>("KeyRingComponent");
+	InteractionQueue = CreateDefaultSubobject<UInteractionQueueComponent>("InteractionQueue");
 }
 
 void APlayerCharacter::BeginPlay()
@@ -60,6 +62,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	                                 &UWeaponComponent::EquipPreviousWeapon);
 	PlayerInputComponent->BindAction("Shoot", IE_Pressed, WeaponComponent, &UWeaponComponent::StartShooting);
 	PlayerInputComponent->BindAction("Shoot", IE_Released, WeaponComponent, &UWeaponComponent::StopShooting);
+
+	// Interaction
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::StartInteraction);
 }
 
 void APlayerCharacter::MoveForward(const float AxisValue)
@@ -111,4 +116,9 @@ void APlayerCharacter::OnDeath(AController* DeathInstigator, AActor* DeathCauser
 		}
 	}
 	WeaponComponent->StopShooting();
+}
+
+void APlayerCharacter::StartInteraction()
+{
+	InteractionQueue->Interact();
 }
