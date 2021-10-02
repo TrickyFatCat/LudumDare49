@@ -5,6 +5,7 @@
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 #include "Core/TrickyGameInstance.h"
+#include "Components/DamageControllerComponent.h"
 
 
 void UGameOverScreenWidget::NativeOnInitialized()
@@ -46,4 +47,13 @@ void UGameOverScreenWidget::OpenNextLevel() const
 	if (NextLevelName.IsNone()) return;
 
 	UGameplayStatics::OpenLevel(this, NextLevelName);
+}
+
+bool UGameOverScreenWidget::IsPlayerDead() const
+{
+	UDamageControllerComponent* DamageController = GetOwningPlayerPawn()->FindComponentByClass<UDamageControllerComponent>();
+
+	if (!DamageController) return false;
+
+	return DamageController->GetIsDead();
 }
