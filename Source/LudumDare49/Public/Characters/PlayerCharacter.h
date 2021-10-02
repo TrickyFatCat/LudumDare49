@@ -92,4 +92,10 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UWidgetComponent* HealthWidget = nullptr;
+
+	UFUNCTION()
+	void UpdateArmorCount(float Armor, float DeltaArmor);
+
+	UFUNCTION()
+	void UpdateHealthCount(float Health, float DeltaHealth);
 };

@@ -3,11 +3,13 @@
 
 #include "Characters/PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Components/DamageControllerComponent.h"
 #include "Components/WeaponComponent.h"
 #include "Core/Session/SessionGameMode.h"
 #include "Components/KeyRingComponent.h"
 #include "Components/InteractionQueueComponent.h"
 #include "Components/WidgetComponent.h"
+#include "UI/CounterUserWidget.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -45,6 +47,11 @@ void APlayerCharacter::BeginPlay()
 
 	InitialWeaponRotation = WeaponScene->GetRelativeRotation();
 	WeaponComponent->SpawnWeapons(WeaponScene);
+	DamageController->OnHealthChanged.AddDynamic(this, &APlayerCharacter::UpdateHealthCount);
+	DamageController->OnArmorChanged.AddDynamic(this, &APlayerCharacter::UpdateArmorCount);
+
+	UpdateArmorCount(DamageController->GetArmor(), 0);
+	UpdateHealthCount(DamageController->GetHealth(), 0);
 }
 
 void APlayerCharacter::Tick(float DeltaSeconds)
@@ -139,4 +146,23 @@ void APlayerCharacter::OnDeath(AController* DeathInstigator, AActor* DeathCauser
 void APlayerCharacter::StartInteraction()
 {
 	InteractionQueue->Interact();
+}
+
+void APlayerCharacter::UpdateArmorCount(float Armor, float DeltaArmor)
+{
+	UCounterUserWidget* Counter = Cast<UCounterUserWidget>(ArmorWidget->GetUserWidgetObject());
+
+	if (!Counter) return;
+
+	Counter->SetCounter(FMath::CeilToInt(Armor));
+}
+
+void APlayerCharacter::UpdateHealthCount(float Health, float DeltaHealth)
+{
+	
+	UCounterUserWidget* Counter = Cast<UCounterUserWidget>(HealthWidget->GetUserWidgetObject());
+
+	if (!Counter) return;
+
+	Counter->SetCounter(FMath::CeilToInt(Health));
 }
