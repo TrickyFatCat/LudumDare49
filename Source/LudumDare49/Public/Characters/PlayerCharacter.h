@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Characters/CharacterBase.h"
+#include "Weapons/WeaponBase.h"
 #include "PlayerCharacter.generated.h"
 
 class UCameraComponent;
@@ -43,7 +44,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UKeyRingComponent* KeyRingComponent = nullptr;
-	
+
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UInteractionQueueComponent* InteractionQueue = nullptr;
 
@@ -83,19 +84,31 @@ private:
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UStaticMeshComponent* ArmorIcon = nullptr;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
-	UStaticMeshComponent* HealthIcon = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
-	UWidgetComponent* ArmorWidget = nullptr;
+	UStaticMeshComponent* HealthIcon = nullptr;
 	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UStaticMeshComponent* WeaponIcon = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UWidgetComponent* ArmorWidget = nullptr;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UWidgetComponent* HealthWidget = nullptr;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UWidgetComponent* WeaponWidget = nullptr;
+	
 	UFUNCTION()
 	void UpdateArmorCount(float Armor, float DeltaArmor);
 
 	UFUNCTION()
 	void UpdateHealthCount(float Health, float DeltaHealth);
+
+	UFUNCTION()
+	void UpdateWeaponCount();
+
+	UFUNCTION()
+	void OnWeaponEquipped(AWeaponBase* NewWeapon);
 };

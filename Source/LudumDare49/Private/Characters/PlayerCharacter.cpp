@@ -25,20 +25,27 @@ APlayerCharacter::APlayerCharacter()
 
 	ArmorIcon = CreateDefaultSubobject<UStaticMeshComponent>("ArmorIcon");
 	ArmorIcon->SetupAttachment(PlayerCamera);
-	
+
 	HealthIcon = CreateDefaultSubobject<UStaticMeshComponent>("HealthIcon");
 	HealthIcon->SetupAttachment(PlayerCamera);
 
+	WeaponIcon = CreateDefaultSubobject<UStaticMeshComponent>("WeaponIcon");
+	WeaponIcon->SetupAttachment(PlayerCamera);
+	
 	ArmorWidget = CreateDefaultSubobject<UWidgetComponent>("ArmorWidget");
 	ArmorWidget->SetupAttachment(ArmorIcon);
-    ArmorWidget->SetWidgetSpace(EWidgetSpace::Screen);
-    ArmorWidget->SetDrawAtDesiredSize(true);
+	ArmorWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	ArmorWidget->SetDrawAtDesiredSize(true);
 
 	HealthWidget = CreateDefaultSubobject<UWidgetComponent>("HealthWidget");
 	HealthWidget->SetupAttachment(HealthIcon);
-    HealthWidget->SetWidgetSpace(EWidgetSpace::Screen);
-    HealthWidget->SetDrawAtDesiredSize(true);
-	
+	HealthWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	HealthWidget->SetDrawAtDesiredSize(true);
+
+	WeaponWidget = CreateDefaultSubobject<UWidgetComponent>("WeaponWidget");
+	WeaponWidget->SetupAttachment(WeaponIcon);
+	WeaponWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	WeaponWidget->SetDrawAtDesiredSize(true);
 }
 
 void APlayerCharacter::BeginPlay()
@@ -47,11 +54,16 @@ void APlayerCharacter::BeginPlay()
 
 	InitialWeaponRotation = WeaponScene->GetRelativeRotation();
 	WeaponComponent->SpawnWeapons(WeaponScene);
+
 	DamageController->OnHealthChanged.AddDynamic(this, &APlayerCharacter::UpdateHealthCount);
 	DamageController->OnArmorChanged.AddDynamic(this, &APlayerCharacter::UpdateArmorCount);
 
+	WeaponComponent->OnWeaponShot.AddDynamic(this, &APlayerCharacter::UpdateWeaponCount);
+	WeaponComponent->OnWeaponEquipped.AddDynamic(this, &APlayerCharacter::OnWeaponEquipped);
+
 	UpdateArmorCount(DamageController->GetArmor(), 0);
 	UpdateHealthCount(DamageController->GetHealth(), 0);
+	UpdateWeaponCount();
 }
 
 void APlayerCharacter::Tick(float DeltaSeconds)
@@ -159,10 +171,23 @@ void APlayerCharacter::UpdateArmorCount(float Armor, float DeltaArmor)
 
 void APlayerCharacter::UpdateHealthCount(float Health, float DeltaHealth)
 {
-	
 	UCounterUserWidget* Counter = Cast<UCounterUserWidget>(HealthWidget->GetUserWidgetObject());
 
 	if (!Counter) return;
 
 	Counter->SetCounter(FMath::CeilToInt(Health));
+}
+
+void APlayerCharacter::UpdateWeaponCount()
+{
+	UCounterUserWidget* Counter = Cast<UCounterUserWidget>(WeaponWidget->GetUserWidgetObject());
+
+	if (!Counter) return;
+
+	Counter->SetCounter(WeaponComponent->GetCurrentAmmo());
+}
+
+void APlayerCharacter::OnWeaponEquipped(AWeaponBase* NewWeapon)
+{
+	UpdateWeaponCount();
 }
