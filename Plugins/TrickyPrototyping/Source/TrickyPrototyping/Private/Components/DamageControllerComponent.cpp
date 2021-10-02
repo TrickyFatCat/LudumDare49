@@ -24,7 +24,7 @@ void UDamageControllerComponent::BeginPlay()
 	ArmorObject = NewObject<UEntityResource>(this, TEXT("ArmorObject"));
 	ArmorObject->SetResourceData(ArmorData);
 	ArmorObject->OnValueChanged.AddUObject(this, &UDamageControllerComponent::BroadcastOnArmorChanged);
-	
+
 	AActor* ComponentOwner = GetOwner();
 
 	if (ComponentOwner)
@@ -143,7 +143,7 @@ void UDamageControllerComponent::CalculateDamage(const float Damage,
 {
 	if (Damage <= 0.f) return;
 
-	float CurrentDamage = Damage * GeneralDamageModifier;
+	int32 CurrentDamage = FMath::CeilToInt(Damage * GeneralDamageModifier);
 
 	if (GetArmor() > 0.f)
 	{
@@ -155,21 +155,19 @@ void UDamageControllerComponent::CalculateDamage(const float Damage,
 		}
 		else
 		{
-			DecreaseArmor(FMath::CeilToFloat(CurrentDamage * ArmorModifier), Instigator);
+			DecreaseArmor(FMath::CeilToInt(CurrentDamage * ArmorModifier), Instigator);
 		}
 	}
 	else
 	{
 		DecreaseHealth(Damage * GeneralDamageModifier);
-
-		if (GetIsDead())
-		{
-			HealthObject->SetAutoIncreaseEnabled(false);
-			OnDeath.Broadcast(Instigator, Causer, DamageType);
-		}
 	}
 
-	if (GetIsDead()) return;
+	if (GetIsDead())
+	{
+		HealthObject->SetAutoIncreaseEnabled(false);
+		OnDeath.Broadcast(Instigator, Causer, DamageType);
+	}
 }
 
 void UDamageControllerComponent::OnTakeAnyDamage(AActor* DamageActor,
