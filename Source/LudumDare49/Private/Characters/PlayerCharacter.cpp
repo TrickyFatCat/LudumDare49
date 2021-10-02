@@ -3,6 +3,7 @@
 
 #include "Characters/PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Components/WeaponComponent.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -11,6 +12,8 @@ APlayerCharacter::APlayerCharacter()
 
 	WeaponScene = CreateDefaultSubobject<USceneComponent>("WeaponScene");
 	WeaponScene->SetupAttachment(PlayerCamera);
+
+	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 }
 
 void APlayerCharacter::BeginPlay()
@@ -18,6 +21,7 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	InitialWeaponRotation = WeaponScene->GetRelativeRotation();
+	WeaponComponent->SpawnWeapons(WeaponScene);
 }
 
 void APlayerCharacter::Tick(float DeltaSeconds)
@@ -41,6 +45,18 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis("LookRight", this, &APlayerCharacter::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APlayerCharacter::SetVerticalSway);
 	PlayerInputComponent->BindAxis("LookRight", this, &APlayerCharacter::SetHorizontalSway);
+
+	// Weapon
+	PlayerInputComponent->BindAction("EquipNextWeapon",
+	                                 IE_Pressed,
+	                                 WeaponComponent,
+	                                 &UWeaponComponent::EquipNextWeapon);
+	PlayerInputComponent->BindAction("EquipPreviousWeapon",
+	                                 IE_Pressed,
+	                                 WeaponComponent,
+	                                 &UWeaponComponent::EquipPreviousWeapon);
+	PlayerInputComponent->BindAction("Shoot", IE_Pressed, WeaponComponent, &UWeaponComponent::StartShooting);
+	PlayerInputComponent->BindAction("Shoot", IE_Released, WeaponComponent, &UWeaponComponent::StopShooting);
 }
 
 void APlayerCharacter::MoveForward(const float AxisValue)

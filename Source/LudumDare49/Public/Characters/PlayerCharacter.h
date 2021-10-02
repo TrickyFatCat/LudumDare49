@@ -7,6 +7,7 @@
 #include "PlayerCharacter.generated.h"
 
 class UCameraComponent;
+class UWeaponComponent;
 
 /**
  * 
@@ -33,6 +34,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	USceneComponent* WeaponScene = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	UWeaponComponent* WeaponComponent = nullptr;
 
 	// Movement
 protected:
