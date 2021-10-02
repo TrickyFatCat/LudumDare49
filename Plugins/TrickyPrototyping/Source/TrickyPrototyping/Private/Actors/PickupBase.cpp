@@ -18,6 +18,11 @@ APickupBase::APickupBase()
 
 	MeshScene = CreateDefaultSubobject<USceneComponent>("MeshScene");
 	MeshScene->SetupAttachment(GetRootComponent());
+
+	PickupMesh = CreateDefaultSubobject<UStaticMeshComponent>("PickupMesh");
+	PickupMesh->SetupAttachment(MeshScene);
+	PickupMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	PickupMesh->SetGenerateOverlapEvents(false);
 }
 
 void APickupBase::BeginPlay()

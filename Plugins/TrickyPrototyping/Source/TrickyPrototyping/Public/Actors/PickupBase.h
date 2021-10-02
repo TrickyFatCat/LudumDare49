@@ -38,6 +38,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
 	USceneComponent* MeshScene = nullptr;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
+	UStaticMeshComponent* PickupMesh = nullptr;
+
 	UFUNCTION(BlueprintNativeEvent, Category="Pickup")
 	bool ActivatePickup(AActor* TargetActor);
 
