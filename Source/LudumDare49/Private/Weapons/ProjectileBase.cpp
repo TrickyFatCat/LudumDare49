@@ -6,6 +6,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Characters/PlayerCharacter.h"
+#include "Weapons/WeaponFxComponent.h"
 
 
 AProjectileBase::AProjectileBase()
@@ -25,6 +26,8 @@ AProjectileBase::AProjectileBase()
 
 	ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>("ProjectileMesh");
 	ProjectileMesh->SetupAttachment(GetRootComponent());
+
+	ProjectileFX = CreateDefaultSubobject<UWeaponFxComponent>("ProjectileFX");
 }
 
 void AProjectileBase::BeginPlay()
@@ -58,7 +61,7 @@ void AProjectileBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		DealRadialDamage();
 		FHitResult HitResult;
 		HitResult.ImpactPoint = GetActorLocation();
-		// ProjectileFX->PlayImpactFX(HitResult);
+		ProjectileFX->PlayImpactFX(HitResult);
 	}
 }
 
@@ -94,8 +97,6 @@ void AProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent,
 
 	if (!World) return;
 
-	// if (OtherActor->IsA(APlayerCharacter::StaticClass())) return;
-
 	if (ProjectileData.bIsBouncing && !OtherActor->IsA(APawn::StaticClass())) return;
 
 	ProjectileMovement->StopMovementImmediately();
@@ -115,7 +116,7 @@ void AProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent,
 		                                   GetDamageType());
 	}
 
-	// ProjectileFX->PlayImpactFX(Hit);
+	ProjectileFX->PlayImpactFX(Hit);
 	Destroy();
 }
 

@@ -9,6 +9,7 @@
 
 class USphereComponent;
 class UProjectileMovementComponent;
+class UWeaponFxComponent;
 
 UCLASS()
 class LUDUMDARE49_API AProjectileBase : public AActor
@@ -41,6 +42,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
 	UStaticMeshComponent* ProjectileMesh = nullptr;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
+	UWeaponFxComponent* ProjectileFX = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category="Projectile")
 	FProjectileData ProjectileData;
