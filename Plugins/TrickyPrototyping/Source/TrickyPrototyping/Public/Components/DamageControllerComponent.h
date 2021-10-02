@@ -43,7 +43,7 @@ private:
 	
 	// Health
 public:
-	UPROPERTY()
+	UPROPERTY(BlueprintAssignable)
 	FOnHealthChangedSignature OnHealthChanged;
 
 	UFUNCTION(BlueprintCallable, Category="Health")
@@ -73,7 +73,7 @@ protected:
 private:
 
 public:
-	UPROPERTY()
+	UPROPERTY(BlueprintAssignable)
 	FOnArmorChangedSignature OnArmorChanged;
 
 	UFUNCTION(BlueprintCallable, Category="Armor")
