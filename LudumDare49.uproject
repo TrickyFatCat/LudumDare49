@@ -15,5 +15,9 @@
 				"AIModule"
 			]
 		}
+	],
+	"TargetPlatforms": [
+		"WindowsNoEditor",
+		"LinuxNoEditor"
 	]
 }
