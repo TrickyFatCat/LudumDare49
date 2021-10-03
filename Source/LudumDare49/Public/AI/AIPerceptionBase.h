@@ -16,4 +16,6 @@ class LUDUMDARE49_API UAIPerceptionBase : public UAIPerceptionComponent
 	
 public:
 	AActor* GetPlayer() const;
+
+	bool CanSeePlayer() const;
 };

@@ -28,5 +28,4 @@ void UBTService_SearchPlayer::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 			Blackboard->SetValueAsObject(TargetActorKey.SelectedKeyName, Player);
 		}
 	}
-	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 }
