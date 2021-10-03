@@ -43,5 +43,5 @@ void AJumpPad::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 
 	if (!PlayerCharacter) return;
 
-	PlayerCharacter->LaunchCharacter(JumpDirection->GetRelativeRotation().Vector() * JumpForce, false, false);
+	PlayerCharacter->LaunchCharacter(JumpDirection->GetRelativeRotation().Vector() * JumpForce, false, true);
 }
