@@ -3,28 +3,29 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BehaviorTree/BTService.h"
-#include "BTService_FindPointNearPlayer.generated.h"
+#include "BehaviorTree/BTTaskNode.h"
+#include "BTTask_FindPointNearPlayer.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class LUDUMDARE49_API UBTService_FindPointNearPlayer : public UBTService
+class LUDUMDARE49_API UBTTask_FindPointNearPlayer : public UBTTaskNode
 {
 	GENERATED_BODY()
 
 public:
-	UBTService_FindPointNearPlayer();
+	UBTTask_FindPointNearPlayer();
 
 
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Node")
 	FBlackboardKeySelector TargetActorKey;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Node")
 	FBlackboardKeySelector TargetLocationKey;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Node")
 	float DistanceMin = 200.f;
 
@@ -36,6 +37,4 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Node")
 	float SearchConeHalfAngle = 90.f;
-
-	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 };
