@@ -12,7 +12,6 @@ UBTService_FindPointNearPlayer::UBTService_FindPointNearPlayer()
 
 void UBTService_FindPointNearPlayer::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
-	
 	UBlackboardComponent* Blackboard = OwnerComp.GetBlackboardComponent();
 	AActor* Owner = OwnerComp.GetOwner();
 
@@ -42,8 +41,8 @@ void UBTService_FindPointNearPlayer::TickNode(UBehaviorTreeComponent& OwnerComp,
 			while (!bLocationFound);
 
 			Blackboard->SetValueAsVector(TargetLocationKey.SelectedKeyName, TargetNavLocation);
-			Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 		}
 	}
 
+	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 }
