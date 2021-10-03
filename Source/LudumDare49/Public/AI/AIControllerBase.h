@@ -33,16 +33,9 @@ public:
 
 	void SetTargetActor(AActor* Value);
 
-	void SetIsAttacking(bool Value);
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="BehaviorTree", meta=(AllowPrivateAccess="true"))
-	FName TargetActorKeyName = "TargetActor";
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="BehaviorTree", meta=(AllowPrivateAccess="true"))
-	FName InitialLocationKeyName = "InitialLocation";
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="BehaviorTree", meta=(AllowPrivateAccess="true"))
-	FName IsAttackingKeyName = "IsAttacking";
+	FName TargetActorKeyName = "Player";
 
 	// Perception
 protected:
