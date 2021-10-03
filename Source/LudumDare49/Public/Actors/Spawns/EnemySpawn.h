@@ -8,6 +8,7 @@
 
 class AEnemyCharacterBase;
 class UBoxComponent;
+class UArrowComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemySpawnedSignature, AEnemyCharacterBase*, SpawnedCharacter);
 
@@ -59,6 +60,9 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Compnonents")
 	UBoxComponent* SpawnArea = nullptr;
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category="Components")
+	UArrowComponent* ForwardVectorPointer = nullptr;
 	
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="Spawn")
 	TArray<FSpawnData> SpawnTable;

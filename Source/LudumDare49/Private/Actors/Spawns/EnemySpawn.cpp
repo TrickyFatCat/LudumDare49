@@ -7,6 +7,7 @@
 #include "Math/TransformCalculus3D.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Components/ArrowComponent.h"
 
 AEnemySpawn::AEnemySpawn()
 {
@@ -15,6 +16,9 @@ AEnemySpawn::AEnemySpawn()
 	SetRootComponent(SpawnArea);
 	SpawnArea->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SpawnArea->SetGenerateOverlapEvents(false);
+	
+	ForwardVectorPointer = CreateDefaultSubobject<UArrowComponent>("ForwardVectorPointer");
+	ForwardVectorPointer->SetupAttachment(GetRootComponent());
 }
 
 void AEnemySpawn::BeginPlay()
