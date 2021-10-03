@@ -23,8 +23,6 @@ void AEnemyCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	OnTakeAnyDamage.AddDynamic(this, &AEnemyCharacterBase::OnAnyDamage);
-
-	SetState(StateInitial);
 }
 
 void AEnemyCharacterBase::Tick(float DeltaSeconds)
@@ -45,27 +43,12 @@ void AEnemyCharacterBase::OnDeath(AController* DeathInstigator, AActor* DeathCau
 	}
 }
 
-void AEnemyCharacterBase::AttackPlayer()
+void AEnemyCharacterBase::StartAttackPlayer()
 {
 }
 
-void AEnemyCharacterBase::SetState(const EEnemyState NewState)
+void AEnemyCharacterBase::StopAttackPlayer()
 {
-	if (StateCurrent == NewState) return;
-
-	StateCurrent = NewState;
-
-
-	switch (StateCurrent)
-	{
-	case EEnemyState::Attack:
-		AggroRadius->SetIsEnabled(true);
-		break;
-
-	default:
-		AggroRadius->SetIsEnabled(false);
-		break;
-	}
 }
 
 void AEnemyCharacterBase::OnAnyDamage(AActor* DamageActor,
