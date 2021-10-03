@@ -1,17 +1,17 @@
 // Made by Title Goose Team during LudumDare 49. All rights reserved.
 
 
-#include "AI/BTS_SearchPlayer.h"
+#include "AI/BTService_SearchPlayer.h"
 #include "AIController.h"
 #include "AI/AIPerceptionBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
-UBTS_SearchPlayer::UBTS_SearchPlayer()
+UBTService_SearchPlayer::UBTService_SearchPlayer()
 {
 	NodeName = "Search Player";
 }
 
-void UBTS_SearchPlayer::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
+void UBTService_SearchPlayer::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 	

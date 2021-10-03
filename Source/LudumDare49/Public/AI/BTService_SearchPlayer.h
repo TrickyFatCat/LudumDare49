@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTService.h"
-#include "BTS_SearchPlayer.generated.h"
+#include "BTService_SearchPlayer.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class LUDUMDARE49_API UBTS_SearchPlayer : public UBTService
+class LUDUMDARE49_API UBTService_SearchPlayer : public UBTService
 {
 	GENERATED_BODY()
 
 public:
-	UBTS_SearchPlayer();
+	UBTService_SearchPlayer();
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Node")
 	FBlackboardKeySelector TargetActorKey;
