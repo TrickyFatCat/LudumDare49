@@ -11,7 +11,8 @@
 			"AdditionalDependencies": [
 				"Engine",
 				"TrickyPrototyping",
-				"UMG"
+				"UMG",
+				"AIModule"
 			]
 		}
 	]
