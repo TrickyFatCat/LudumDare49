@@ -3,17 +3,28 @@
 
 #include "Characters/EnemyCharacterBase.h"
 
+#include "BrainComponent.h"
+#include "AI/AIControllerBase.h"
 #include "Components/DamageControllerComponent.h"
 #include "Perception/AISense_Damage.h"
+#include "Components/TriggerComponents/BaseSphereTriggerComponent.h"
 
 AEnemyCharacterBase::AEnemyCharacterBase()
 {
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	AIControllerClass = AAIControllerBase::StaticClass();
+	bUseControllerRotationYaw = false;
+
+
+	AggroRadius = CreateDefaultSubobject<UBaseSphereTriggerComponent>("AggroRadius");
 }
 
 void AEnemyCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	OnTakeAnyDamage.AddDynamic(this, &AEnemyCharacterBase::OnAnyDamage);
+	
+	SetState(StateInitial);
 }
 
 void AEnemyCharacterBase::Tick(float DeltaSeconds)
@@ -21,8 +32,40 @@ void AEnemyCharacterBase::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 }
 
+void AEnemyCharacterBase::OnDeath(AController* DeathInstigator, AActor* DeathCauser, const UDamageType* Damage)
+{
+	Super::OnDeath(DeathInstigator, DeathCauser, Damage);
+	SetLifeSpan(DefaultLifeSpan);
+	AAIController* AIController = Cast<AAIController>(Controller);
+
+	if (AIController && AIController->BrainComponent)
+	{
+		AIController->BrainComponent->Cleanup();
+		AIController->StopMovement();
+	}
+}
+
 void AEnemyCharacterBase::AttackPlayer()
 {
+}
+
+void AEnemyCharacterBase::SetState(const EEnemyState NewState)
+{
+	if (StateCurrent == NewState) return;
+
+	StateCurrent = NewState;
+
+	
+	switch (StateCurrent)
+	{
+		case EEnemyState::Attack:
+			AggroRadius->SetIsEnabled(true);
+		break;
+
+		default:
+			AggroRadius->SetIsEnabled(false);
+		break;
+	}
 }
 
 void AEnemyCharacterBase::OnAnyDamage(AActor* DamageActor,
