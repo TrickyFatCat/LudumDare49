@@ -29,6 +29,16 @@ void AEnemyCharacterBase::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 }
 
+void AEnemyCharacterBase::ForceAttack() const
+{
+	
+	AAIControllerBase* AIController = Cast<AAIControllerBase>(GetController());
+
+	if (!AIController) return;
+
+	AIController->SetTargetActor(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+}
+
 void AEnemyCharacterBase::OnDeath(AController* DeathInstigator, AActor* DeathCauser, const UDamageType* Damage)
 {
 	FinishAttack();

@@ -35,6 +35,8 @@ protected:
 public:
 	virtual void Tick(float DeltaSeconds) override;
 
+	void ForceAttack() const;
+
 protected:
 	virtual void OnDeath(AController* DeathInstigator, AActor* DeathCauser, const UDamageType* DamageType) override;
 
@@ -46,7 +48,6 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void FinishAttack();
-
 
 private:
 	const float DefaultLifeSpan = 5.f;
