@@ -34,8 +34,7 @@ AActor* UAIPerceptionBase::GetPlayer() const
 	{
 		if (!PerceivedActor->IsA(APlayerCharacter::StaticClass())) continue;
 
-		UDamageControllerComponent* DamageController = PerceivedActor->FindComponentByClass<
-			UDamageControllerComponent>();
+		UDamageControllerComponent* DamageController = PerceivedActor->FindComponentByClass<UDamageControllerComponent>();
 
 		if (DamageController && !DamageController->GetIsDead())
 		{
