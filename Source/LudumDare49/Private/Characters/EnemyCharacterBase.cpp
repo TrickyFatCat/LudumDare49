@@ -8,23 +8,20 @@
 #include "Components/DamageControllerComponent.h"
 #include "Perception/AISense_Damage.h"
 #include "Components/TriggerComponents/BaseSphereTriggerComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 AEnemyCharacterBase::AEnemyCharacterBase()
 {
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	AIControllerClass = AAIControllerBase::StaticClass();
 	bUseControllerRotationYaw = false;
-
-
-	AggroRadius = CreateDefaultSubobject<UBaseSphereTriggerComponent>("AggroRadius");
 }
 
 void AEnemyCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	OnTakeAnyDamage.AddDynamic(this, &AEnemyCharacterBase::OnAnyDamage);
-
-	SetState(StateInitial);
 }
 
 void AEnemyCharacterBase::Tick(float DeltaSeconds)
@@ -34,6 +31,7 @@ void AEnemyCharacterBase::Tick(float DeltaSeconds)
 
 void AEnemyCharacterBase::OnDeath(AController* DeathInstigator, AActor* DeathCauser, const UDamageType* Damage)
 {
+	FinishAttack();
 	Super::OnDeath(DeathInstigator, DeathCauser, Damage);
 	SetLifeSpan(DefaultLifeSpan);
 	AAIController* AIController = Cast<AAIController>(Controller);
@@ -45,27 +43,12 @@ void AEnemyCharacterBase::OnDeath(AController* DeathInstigator, AActor* DeathCau
 	}
 }
 
-void AEnemyCharacterBase::AttackPlayer()
+void AEnemyCharacterBase::StartAttack()
 {
 }
 
-void AEnemyCharacterBase::SetState(const EEnemyState NewState)
+void AEnemyCharacterBase::FinishAttack()
 {
-	if (StateCurrent == NewState) return;
-
-	StateCurrent = NewState;
-
-
-	switch (StateCurrent)
-	{
-	case EEnemyState::Attack:
-		AggroRadius->SetIsEnabled(true);
-		break;
-
-	default:
-		AggroRadius->SetIsEnabled(false);
-		break;
-	}
 }
 
 void AEnemyCharacterBase::OnAnyDamage(AActor* DamageActor,
@@ -77,6 +60,12 @@ void AEnemyCharacterBase::OnAnyDamage(AActor* DamageActor,
 	if (DamageController->GetIsDead()) return;
 
 	ReportDamageEvent(Damage, InstigatedBy, DamageCauser);
+
+	if (bIsDamaged) return;
+
+	AggroNeighbours();
+
+	bIsDamaged = true;
 }
 
 void AEnemyCharacterBase::ReportDamageEvent(const float Damage,
@@ -93,4 +82,35 @@ void AEnemyCharacterBase::ReportDamageEvent(const float Damage,
 	                                   Damage,
 	                                   EventLocation,
 	                                   GetOwner()->GetActorLocation());
+}
+
+void AEnemyCharacterBase::AggroNeighbours()
+{if (!GetWorld()) return;
+ 
+ 	TArray<FHitResult> HitResults;
+ 	AAIControllerBase* AIController = nullptr;
+ 
+ 	UKismetSystemLibrary::SphereTraceMulti(GetWorld(),
+ 	                                       GetActorLocation(),
+ 	                                       GetActorLocation(),
+ 	                                       AggroRadius,
+ 	                                       UEngineTypes::ConvertToTraceType(ECC_Visibility),
+ 	                                       false,
+ 	                                       {this},
+ 	                                       EDrawDebugTrace::None,
+ 	                                       HitResults,
+ 	                                       true);
+ 
+ 	for (auto HitResult : HitResults)
+ 	{
+ 		AEnemyCharacterBase* Character = Cast<AEnemyCharacterBase>(HitResult.GetActor());
+ 
+ 		if (!Character) continue;
+ 
+ 		AIController = Cast<AAIControllerBase>(Character->GetController());
+ 
+ 		if (!AIController) continue;
+ 
+ 		AIController->SetTargetActor(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+ 	}
 }

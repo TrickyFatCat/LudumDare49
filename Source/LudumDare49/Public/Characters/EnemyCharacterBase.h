@@ -38,10 +38,15 @@ public:
 protected:
 	virtual void OnDeath(AController* DeathInstigator, AActor* DeathCauser, const UDamageType* DamageType) override;
 
-	virtual void AttackPlayer();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Enemy")
+	int32 AttackDamage = 10;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
-	UBaseSphereTriggerComponent* AggroRadius = nullptr;
+	UFUNCTION(BlueprintCallable)
+	virtual void StartAttack();
+
+	UFUNCTION(BlueprintCallable)
+	virtual void FinishAttack();
+
 
 private:
 	const float DefaultLifeSpan = 5.f;
@@ -55,24 +60,19 @@ private:
 
 
 	void ReportDamageEvent(const float Damage, const AController* InstigatedBy, const AActor* Causer) const;
+	
+	void AggroNeighbours();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Enemy", meta=(AllowPrivateAccess="true", ClampMin="0"))
+	float AggroRadius = 300.f;
+
+	bool bIsDamaged = false;
 
 	// Behaviour
 public:
 	UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
 
-	void SetState(const EEnemyState NewState);
-
-	EEnemyState GetStateCurrent() const { return StateCurrent; }
-
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Enemy|AI", meta=(AllowPrivateAccess="true"))
 	UBehaviorTree* BehaviorTree = nullptr;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enemy", meta=(AllowPrivateAccess="true"))
-	EEnemyState StateInitial = EEnemyState::Idle;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enemy", meta=(AllowPrivateAccess="true"))
-	EEnemyState StateCurrent = EEnemyState::Idle;
-
-	
 };
