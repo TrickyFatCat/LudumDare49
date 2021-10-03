@@ -20,6 +20,14 @@ AEnemySpawn::AEnemySpawn()
 void AEnemySpawn::BeginPlay()
 {
 	Super::BeginPlay();
+	CachedSpawnTable = SpawnTable;
+
+	for (const auto SpawnData : CachedSpawnTable)
+	{
+		if (!SpawnData.EnemyClass) continue;
+
+		SpawnedEnemiesMax += SpawnData.Number;
+	}
 }
 
 void AEnemySpawn::Tick(float DeltaTime)
