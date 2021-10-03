@@ -47,9 +47,6 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	virtual void FinishAttack();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
-	UBaseSphereTriggerComponent* AggroRadius = nullptr;
-	
 
 private:
 	const float DefaultLifeSpan = 5.f;
@@ -63,6 +60,13 @@ private:
 
 
 	void ReportDamageEvent(const float Damage, const AController* InstigatedBy, const AActor* Causer) const;
+	
+	void AggroNeighbours();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Enemy", meta=(AllowPrivateAccess="true", ClampMin="0"))
+	float AggroRadius = 300.f;
+
+	bool bIsDamaged = false;
 
 	// Behaviour
 public:
@@ -71,5 +75,4 @@ public:
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Enemy|AI", meta=(AllowPrivateAccess="true"))
 	UBehaviorTree* BehaviorTree = nullptr;
-	
 };

@@ -8,15 +8,14 @@
 #include "Components/DamageControllerComponent.h"
 #include "Perception/AISense_Damage.h"
 #include "Components/TriggerComponents/BaseSphereTriggerComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 AEnemyCharacterBase::AEnemyCharacterBase()
 {
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	AIControllerClass = AAIControllerBase::StaticClass();
 	bUseControllerRotationYaw = false;
-
-
-	AggroRadius = CreateDefaultSubobject<UBaseSphereTriggerComponent>("AggroRadius");
 }
 
 void AEnemyCharacterBase::BeginPlay()
@@ -61,6 +60,10 @@ void AEnemyCharacterBase::OnAnyDamage(AActor* DamageActor,
 	if (DamageController->GetIsDead()) return;
 
 	ReportDamageEvent(Damage, InstigatedBy, DamageCauser);
+
+	if (bIsDamaged) return;
+
+	AggroNeighbours();
 }
 
 void AEnemyCharacterBase::ReportDamageEvent(const float Damage,
@@ -77,4 +80,35 @@ void AEnemyCharacterBase::ReportDamageEvent(const float Damage,
 	                                   Damage,
 	                                   EventLocation,
 	                                   GetOwner()->GetActorLocation());
+}
+
+void AEnemyCharacterBase::AggroNeighbours()
+{if (!GetWorld()) return;
+ 
+ 	TArray<FHitResult> HitResults;
+ 	AAIControllerBase* AIController = nullptr;
+ 
+ 	UKismetSystemLibrary::SphereTraceMulti(GetWorld(),
+ 	                                       GetActorLocation(),
+ 	                                       GetActorLocation(),
+ 	                                       AggroRadius,
+ 	                                       UEngineTypes::ConvertToTraceType(ECC_Visibility),
+ 	                                       false,
+ 	                                       {this},
+ 	                                       EDrawDebugTrace::None,
+ 	                                       HitResults,
+ 	                                       true);
+ 
+ 	for (auto HitResult : HitResults)
+ 	{
+ 		AEnemyCharacterBase* Character = Cast<AEnemyCharacterBase>(HitResult.GetActor());
+ 
+ 		if (!Character) continue;
+ 
+ 		AIController = Cast<AAIControllerBase>(Character->GetController());
+ 
+ 		if (!AIController) continue;
+ 
+ 		AIController->SetTargetActor(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+ 	}
 }
