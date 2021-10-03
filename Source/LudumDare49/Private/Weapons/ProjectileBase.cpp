@@ -107,6 +107,7 @@ void AProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent,
 	}
 	else
 	{
+		if (OtherActor->IsA(GetOwner()->GetClass())) return;
 		UGameplayStatics::ApplyPointDamage(OtherActor,
 		                                   ProjectileData.Damage,
 		                                   Hit.Location,
