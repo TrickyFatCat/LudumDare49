@@ -173,5 +173,4 @@ protected:
 	                                class AController* InstigatedBy,
 	                                AActor* DamageCauser);
 private:
-	void ReportDamageEvent(const float Damage, const AController* Instigator, const AActor* Causer) const;
 };
