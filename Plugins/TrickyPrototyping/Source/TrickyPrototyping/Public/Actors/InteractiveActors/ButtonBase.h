@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Actors/InteractiveActorBase.h"
 #include "Interfaces/InteractionInterface.h"
+#include "TimerManager.h"
 #include "ButtonBase.generated.h"
 
 class UInteractionSphereComponent;

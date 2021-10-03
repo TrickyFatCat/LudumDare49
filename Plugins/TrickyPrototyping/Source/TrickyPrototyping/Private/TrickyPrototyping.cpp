@@ -4,6 +4,8 @@
 
 #define LOCTEXT_NAMESPACE "FTrickyPrototypingModule"
 
+#include "TimerManager.h"
+
 void FTrickyPrototypingModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
