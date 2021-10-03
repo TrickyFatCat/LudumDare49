@@ -34,7 +34,8 @@ AActor* UAIPerceptionBase::GetPlayer() const
 	{
 		if (!PerceivedActor->IsA(APlayerCharacter::StaticClass())) continue;
 
-		UDamageControllerComponent* DamageController = PerceivedActor->FindComponentByClass<UDamageControllerComponent>();
+		UDamageControllerComponent* DamageController = PerceivedActor->FindComponentByClass<
+			UDamageControllerComponent>();
 
 		if (DamageController && !DamageController->GetIsDead())
 		{
@@ -43,4 +44,37 @@ AActor* UAIPerceptionBase::GetPlayer() const
 		}
 	}
 	return Player;
+}
+
+bool UAIPerceptionBase::CanSeePlayer() const
+{
+	bool Result = false;
+	TArray<AActor*> PerceivedActors;
+
+	GetCurrentlyPerceivedActors(UAISense_Sight::StaticClass(), PerceivedActors);
+
+	if (PerceivedActors.Num() == 0) return Result;
+
+	AAIController* AIController = Cast<AAIController>(GetOwner());
+
+	if (!AIController) return Result;
+
+	APawn* Pawn = AIController->GetPawn();
+
+	if (!Pawn) return nullptr;
+
+	for (AActor* PerceivedActor : PerceivedActors)
+	{
+		if (!PerceivedActor->IsA(APlayerCharacter::StaticClass())) continue;
+
+		UDamageControllerComponent* DamageController = PerceivedActor->FindComponentByClass<
+			UDamageControllerComponent>();
+
+		if (DamageController && !DamageController->GetIsDead())
+		{
+			Result = true;
+			break;
+		}
+	}
+	return Result;
 }
