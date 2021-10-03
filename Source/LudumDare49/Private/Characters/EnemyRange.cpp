@@ -5,6 +5,8 @@
 #include "Components/ArrowComponent.h"
 #include "Weapons/ProjectileBase.h"
 #include "Weapons/WeaponCoreTypes.h"
+#include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 AEnemyRange::AEnemyRange()
 {
@@ -15,7 +17,7 @@ AEnemyRange::AEnemyRange()
 void AEnemyRange::StartAttack()
 {
 	Super::StartAttack();
-
+	
 	SpawnProjectile();
 }
 
@@ -27,7 +29,8 @@ void AEnemyRange::FinishAttack()
 bool AEnemyRange::GetTraceData(FVector& TraceStart, FVector& TraceEnd, const bool bCalculateSpread)
 {
 	TraceStart = ProjectileSpawn->GetComponentLocation();
-	FVector TraceDirection = ProjectileSpawn->GetComponentRotation().Vector();
+	const FVector PlayerLocation = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
+	FVector TraceDirection = (PlayerLocation - GetActorLocation()).GetSafeNormal();
 
 	if (WeaponData.Spread > 0.f && bCalculateSpread)
 	{
@@ -67,6 +70,7 @@ void AEnemyRange::SpawnProjectile()
 		}
 
 		GetHitScanData(HitResult, TraceStart, TraceEnd);
+		// DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 5, 0, 3);
 		const FVector MuzzleLocation = ProjectileSpawn->GetComponentLocation();
 		const FVector EndPoint = HitResult.bBlockingHit ? HitResult.ImpactPoint : TraceEnd;
 		const FVector Direction = (EndPoint - MuzzleLocation).GetSafeNormal();
