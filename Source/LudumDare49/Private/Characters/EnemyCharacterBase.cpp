@@ -23,7 +23,7 @@ void AEnemyCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	OnTakeAnyDamage.AddDynamic(this, &AEnemyCharacterBase::OnAnyDamage);
-	
+
 	SetState(StateInitial);
 }
 
@@ -55,15 +55,15 @@ void AEnemyCharacterBase::SetState(const EEnemyState NewState)
 
 	StateCurrent = NewState;
 
-	
+
 	switch (StateCurrent)
 	{
-		case EEnemyState::Attack:
-			AggroRadius->SetIsEnabled(true);
+	case EEnemyState::Attack:
+		AggroRadius->SetIsEnabled(true);
 		break;
 
-		default:
-			AggroRadius->SetIsEnabled(false);
+	default:
+		AggroRadius->SetIsEnabled(false);
 		break;
 	}
 }
