@@ -39,9 +39,8 @@ void AJumpPad::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
                                      bool bFromSweep,
                                      const FHitResult& SweepResult)
 {
-	// APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor);
+	APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor);
 
-	ACharacter* PlayerCharacter = Cast<ACharacter>(OtherActor);
 	if (!PlayerCharacter) return;
 
 	PlayerCharacter->LaunchCharacter(JumpDirection->GetRelativeRotation().Vector() * JumpForce, false, true);

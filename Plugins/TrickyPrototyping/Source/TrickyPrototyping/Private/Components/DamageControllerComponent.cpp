@@ -4,8 +4,8 @@
 #include "Components/DamageControllerComponent.h"
 #include "Objects/EntityResource.h"
 #include "GameFramework/Character.h"
-#include "Perception/AISense_Damage.h"
 #include "GameFramework/Controller.h"
+#include "Components/SkeletalMeshComponent.h"
 
 UDamageControllerComponent::UDamageControllerComponent()
 {
