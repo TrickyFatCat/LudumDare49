@@ -5,10 +5,16 @@
 
 #include "Characters/EnemyCharacterBase.h"
 #include "Math/TransformCalculus3D.h"
+#include "Components/BoxComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AEnemySpawn::AEnemySpawn()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	SpawnArea = CreateDefaultSubobject<UBoxComponent>("SpawnArea");
+	SetRootComponent(SpawnArea);
+	SpawnArea->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SpawnArea->SetGenerateOverlapEvents(false);
 }
 
 void AEnemySpawn::BeginPlay()
@@ -91,7 +97,11 @@ void AEnemySpawn::ProcessSpawnQueue()
 
 FTransform AEnemySpawn::CalculateSpawnTransform()
 {
-	return FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector::OneVector);
+	const FVector VolumeExtent = SpawnArea->GetScaledBoxExtent();
+	const FVector VolumeOrigin = SpawnArea->GetComponentLocation();
+	const FVector Location = UKismetMathLibrary::RandomPointInBoundingBox(VolumeOrigin, VolumeExtent);
+	const FRotator Rotation = FRotator(0.f, GetActorRotation().Yaw, 0.f);
+	return FTransform(Rotation, FVector(Location.X, Location.Y, GetActorLocation().Z), FVector::OneVector);
 }
 
 bool AEnemySpawn::IsEnemyIdOutOfBounds()
