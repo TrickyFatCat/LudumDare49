@@ -20,6 +20,7 @@ AWeaponBase::AWeaponBase()
 
 	WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>("WeaponMesh");
 	WeaponMesh->SetupAttachment(GetRootComponent());
+	WeaponMesh->CastShadow = false;
 
 	WeaponMuzzle = CreateDefaultSubobject<USceneComponent>("WeaponMuzzle");
 	WeaponMuzzle->SetupAttachment(WeaponMesh);
