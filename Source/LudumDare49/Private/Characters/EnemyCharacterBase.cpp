@@ -64,6 +64,8 @@ void AEnemyCharacterBase::OnAnyDamage(AActor* DamageActor,
 	if (bIsDamaged) return;
 
 	AggroNeighbours();
+
+	bIsDamaged = true;
 }
 
 void AEnemyCharacterBase::ReportDamageEvent(const float Damage,
