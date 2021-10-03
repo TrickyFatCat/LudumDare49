@@ -9,6 +9,7 @@
 
 class USoundCue;
 class UWeaponFxComponent;
+class UParticleSystemComponent;
 
 UCLASS()
 class LUDUMDARE49_API AWeaponBase : public AActor
@@ -40,6 +41,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	USceneComponent* WeaponMuzzle = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
+	USceneComponent* MuzzleParticle = nullptr;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	UWeaponFxComponent* WeaponFXComponent = nullptr;
