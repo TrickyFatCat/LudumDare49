@@ -32,6 +32,7 @@ void AEnemyCharacterBase::Tick(float DeltaSeconds)
 
 void AEnemyCharacterBase::OnDeath(AController* DeathInstigator, AActor* DeathCauser, const UDamageType* Damage)
 {
+	FinishAttack();
 	Super::OnDeath(DeathInstigator, DeathCauser, Damage);
 	SetLifeSpan(DefaultLifeSpan);
 	AAIController* AIController = Cast<AAIController>(Controller);
@@ -43,11 +44,11 @@ void AEnemyCharacterBase::OnDeath(AController* DeathInstigator, AActor* DeathCau
 	}
 }
 
-void AEnemyCharacterBase::StartAttackPlayer()
+void AEnemyCharacterBase::StartAttack()
 {
 }
 
-void AEnemyCharacterBase::StopAttackPlayer()
+void AEnemyCharacterBase::FinishAttack()
 {
 }
 

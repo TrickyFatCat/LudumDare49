@@ -41,9 +41,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Enemy")
 	int32 AttackDamage = 10;
 
-	virtual void StartAttackPlayer();
+	UFUNCTION(BlueprintCallable)
+	virtual void StartAttack();
 
-	virtual void StopAttackPlayer();
+	UFUNCTION(BlueprintCallable)
+	virtual void FinishAttack();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UBaseSphereTriggerComponent* AggroRadius = nullptr;
