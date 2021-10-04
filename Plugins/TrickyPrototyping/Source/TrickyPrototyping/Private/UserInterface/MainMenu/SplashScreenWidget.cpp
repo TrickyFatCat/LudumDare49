@@ -4,7 +4,9 @@
 #include "UserInterface/MainMenu/SplashScreenWidget.h"
 
 #include "Components/Image.h"
+#include "Kismet/GameplayStatics.h"
 #include "UserInterface/TransitionScreenWidget.h"
+#include "Sound/SoundCue.h"
 
 void USplashScreenWidget::NativeOnInitialized()
 {
@@ -21,13 +23,18 @@ void USplashScreenWidget::NativeOnInitialized()
 void USplashScreenWidget::StartSplashTimer()
 {
 	if (!GetWorld()) return;
-
+	
+	if (Image_JamSplash->GetVisibility() == ESlateVisibility::Hidden && Image_TeamSplash->GetVisibility() != ESlateVisibility::Hidden)
+	{
+		UGameplayStatics::PlaySound2D(GetWorld(), GooseSound);
+	}
+	
 	if (Image_TeamSplash->GetVisibility() == ESlateVisibility::Hidden)
 	{
 		OnSplashFinished.Broadcast();
 		return;
 	}
-	
+
 	GetWorld()->GetTimerManager().SetTimer(SplashTimerHandle,
 	                                       TransitionScreen,
 	                                       &UTransitionScreenWidget::Show,
