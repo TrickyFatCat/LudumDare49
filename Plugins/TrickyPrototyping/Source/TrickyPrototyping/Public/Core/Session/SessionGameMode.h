@@ -72,4 +72,10 @@ private:
 public:
 	UFUNCTION(BlueprintCallable, Category="Session")
 	void FinishSession();
+
+	UFUNCTION(BlueprintPure, Category="Session")
+	float GetFinalTime() const { return FinalTime; }
+	
+	protected:
+	float FinalTime = 0.f;
 };
