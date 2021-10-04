@@ -12,6 +12,7 @@ class UCameraComponent;
 class UWeaponComponent;
 class UInteractionQueueComponent;
 class UWidgetComponent;
+class USpringArmComponent;
 
 /**
  * 
@@ -36,6 +37,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UCameraComponent* PlayerCamera = nullptr;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	USpringArmComponent* WeaponSway = nullptr;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	USceneComponent* WeaponScene = nullptr;
 

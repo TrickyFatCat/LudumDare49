@@ -4,6 +4,7 @@
 #include "Core/Session/SessionPlayerController.h"
 
 #include "Core/Session/SessionGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 ASessionPlayerController::ASessionPlayerController()
 {
@@ -33,6 +34,19 @@ void ASessionPlayerController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 }
 
+void ASessionPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+
+	if (!InputComponent) return;
+
+	FInputActionBinding& Pause = InputComponent->BindAction("Pause",
+	                                                        IE_Pressed,
+	                                                        this,
+	                                                        &ASessionPlayerController::ProcessGamePause);
+	Pause.bExecuteWhenPaused = true;
+}
+
 void ASessionPlayerController::OnSessionStateChanged(const ESessionState NewState)
 {
 	if (NewState == ESessionState::Progress)
@@ -47,4 +61,17 @@ void ASessionPlayerController::OnSessionStateChanged(const ESessionState NewStat
 		SetInputMode(FInputModeUIOnly());
 		DisableInput(this);
 	}
+}
+
+void ASessionPlayerController::ProcessGamePause()
+{
+	if (!GetWorld()) return;
+
+	if (IsPaused())
+	{
+		UGameplayStatics::SetGamePaused(GetWorld(), false);
+		return;
+	}
+
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
 }

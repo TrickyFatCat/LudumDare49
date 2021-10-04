@@ -125,5 +125,6 @@ void ASessionGameMode::StartSession()
 
 void ASessionGameMode::FinishSession()
 {
+	FinalTime = GetSessionElapsedTime();
 	SetSessionState(ESessionState::GameOver);
 }

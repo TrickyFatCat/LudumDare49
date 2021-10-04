@@ -9,6 +9,7 @@
 class UTransitionScreenWidget;
 class UTextBlock;
 class ASessionGameMode;
+class USoundCue;
 
 /**
  * 
@@ -29,4 +30,10 @@ protected:
 	
 	UFUNCTION(BlueprintPure, Category="UI")
 	float GetSessionTime() const;
+	
+	UPROPERTY(EditDefaultsOnly, Category="Sound")
+	USoundCue* GameMusic = nullptr;
+
+	UFUNCTION()
+	void StartPlayingMusic();
 };

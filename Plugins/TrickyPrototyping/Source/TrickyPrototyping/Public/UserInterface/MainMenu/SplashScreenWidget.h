@@ -8,6 +8,7 @@
 
 class UImage;
 class UTransitionScreenWidget;
+class USoundCue;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSplashFinishedSignature);
 
@@ -32,6 +33,9 @@ protected:
 	
 	UPROPERTY(meta=(BindWidget))
 	UImage* Image_TeamSplash = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category="UserInterface")
+	USoundCue* GooseSound = nullptr;
 
 	virtual void NativeOnInitialized() override;
 
