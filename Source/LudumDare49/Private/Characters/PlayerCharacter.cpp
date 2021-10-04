@@ -11,14 +11,18 @@
 #include "Components/InteractionQueueComponent.h"
 #include "Components/WidgetComponent.h"
 #include "UI/CounterUserWidget.h"
+#include "GameFramework/SpringArmComponent.h"
 
 APlayerCharacter::APlayerCharacter()
 {
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>("PlayerCamera");
 	PlayerCamera->SetupAttachment(GetMesh());
 
+	WeaponSway = CreateDefaultSubobject<USpringArmComponent>("WeaponSway");
+	WeaponSway->SetupAttachment(PlayerCamera);
+
 	WeaponScene = CreateDefaultSubobject<USceneComponent>("WeaponScene");
-	WeaponScene->SetupAttachment(PlayerCamera);
+	WeaponScene->SetupAttachment(WeaponSway);
 
 	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 	KeyRingComponent = CreateDefaultSubobject<UKeyRingComponent>("KeyRingComponent");
@@ -86,7 +90,7 @@ void APlayerCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	ProcessSwayRotation(DeltaSeconds);
+	// ProcessSwayRotation(DeltaSeconds);
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -101,8 +105,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	// Aiming
 	PlayerInputComponent->BindAxis("LookUp", this, &APlayerCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookRight", this, &APlayerCharacter::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("LookUp", this, &APlayerCharacter::SetVerticalSway);
-	PlayerInputComponent->BindAxis("LookRight", this, &APlayerCharacter::SetHorizontalSway);
+	// PlayerInputComponent->BindAxis("LookUp", this, &APlayerCharacter::SetVerticalSway);
+	// PlayerInputComponent->BindAxis("LookRight", this, &APlayerCharacter::SetHorizontalSway);
 
 	// Weapon
 	PlayerInputComponent->BindAction("EquipNextWeapon",

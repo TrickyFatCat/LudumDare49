@@ -8,6 +8,7 @@
 
 class UBaseSphereTriggerComponent;
 class UBehaviorTree;
+class USoundCue;
 
 UENUM(BlueprintType)
 enum class EEnemyState : uint8
@@ -43,6 +44,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Enemy")
 	int32 AttackDamage = 10;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Enemy")
+	USoundCue* AttackSound = nullptr;
+	
 	UFUNCTION(BlueprintCallable)
 	virtual void StartAttack();
 
