@@ -11,6 +11,7 @@ class UButton;
 class UImage;
 class USplashScreenWidget;
 class UTransitionScreenWidget;
+class USoundCue;
 
 /**
  * 
@@ -38,6 +39,9 @@ protected:
 
 	UPROPERTY(meta=(BindWidget))
 	UButton* Button_QuitGame = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category="Sound")
+	USoundCue* MenuMusic = nullptr;
 
 private:
 	ETransitionCommand Command;

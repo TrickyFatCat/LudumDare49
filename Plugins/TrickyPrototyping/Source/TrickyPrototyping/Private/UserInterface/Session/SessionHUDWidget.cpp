@@ -5,7 +5,9 @@
 
 #include "Components/TextBlock.h"
 #include "Core/Session/SessionGameMode.h"
+#include "Kismet/GameplayStatics.h"
 #include "UserInterface/TransitionScreenWidget.h"
+#include "Sound/SoundCue.h"
 
 void USessionHUDWidget::NativeOnInitialized()
 {
@@ -14,6 +16,7 @@ void USessionHUDWidget::NativeOnInitialized()
 	if (TransitionScreen)
 	{
 		TransitionScreen->Hide();
+		TransitionScreen->OnHidden.AddDynamic(this, &USessionHUDWidget::StartPlayingMusic);
 	}
 }
 
@@ -24,4 +27,9 @@ float USessionHUDWidget::GetSessionTime() const
 	if (!GameMode) return -1.f;
 
 	return GameMode->GetSessionRemainingTime();
+}
+
+void USessionHUDWidget::StartPlayingMusic()
+{
+	UGameplayStatics::PlaySound2D(GetWorld(), GameMusic);
 }

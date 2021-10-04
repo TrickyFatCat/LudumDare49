@@ -9,6 +9,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "UserInterface/MainMenu/SplashScreenWidget.h"
 #include "Core/TrickyGameInstance.h"
+#include "Sound/SoundCue.h"
 
 void UMainMenuWidget::NativeOnInitialized()
 {
@@ -49,6 +50,8 @@ void UMainMenuWidget::OnSplashFinished()
 
 	SplashScreen->SetVisibility(ESlateVisibility::Hidden);
 	GetOwningPlayer()->bShowMouseCursor = true;
+
+	UGameplayStatics::PlaySound2D(GetWorld(), MenuMusic);
 }
 
 void UMainMenuWidget::ProcessTransition()
