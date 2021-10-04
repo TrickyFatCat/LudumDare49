@@ -8,6 +8,7 @@
 #include "JumpPad.generated.h"
 
 class UBaseSphereTriggerComponent;
+class USoundCue;
 
 UCLASS()
 class LUDUMDARE49_API AJumpPad : public AActor
@@ -35,6 +36,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="JumpPad")
 	float JumpForce = 1000.f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="JumpPad")
+	USoundCue* JumpSound = nullptr;
 
 	UFUNCTION()
 	virtual void OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent,

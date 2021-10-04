@@ -5,6 +5,8 @@
 
 #include "Characters/PlayerCharacter.h"
 #include "Components/TriggerComponents/BaseSphereTriggerComponent.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
 
 AJumpPad::AJumpPad()
 {
@@ -44,4 +46,5 @@ void AJumpPad::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	if (!PlayerCharacter) return;
 
 	PlayerCharacter->LaunchCharacter(JumpDirection->GetRelativeRotation().Vector() * JumpForce, false, true);
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), JumpSound, GetActorLocation(), GetActorRotation());
 }
