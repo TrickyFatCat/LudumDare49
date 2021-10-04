@@ -7,9 +7,9 @@
 #include "AI/AIControllerBase.h"
 #include "Components/DamageControllerComponent.h"
 #include "Perception/AISense_Damage.h"
-#include "Components/TriggerComponents/BaseSphereTriggerComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Sound/SoundCue.h"
 
 AEnemyCharacterBase::AEnemyCharacterBase()
 {
@@ -55,6 +55,7 @@ void AEnemyCharacterBase::OnDeath(AController* DeathInstigator, AActor* DeathCau
 
 void AEnemyCharacterBase::StartAttack()
 {
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), AttackSound, GetActorLocation(), GetActorRotation());
 }
 
 void AEnemyCharacterBase::FinishAttack()
