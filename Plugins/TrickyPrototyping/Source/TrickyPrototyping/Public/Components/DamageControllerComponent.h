@@ -124,6 +124,7 @@ public:
 	UPROPERTY()
 	FOnDeathSignature OnDeath;
 
+	UFUNCTION(BlueprintPure, Category="Damage")
 	bool GetIsDead() const { return GetHealth() <= 0.f; }
 	UFUNCTION(BlueprintCallable, Category="Damage")
 	float GetGeneralDamageModifier() const { return GeneralDamageModifier; }
@@ -173,5 +174,4 @@ protected:
 	                                class AController* InstigatedBy,
 	                                AActor* DamageCauser);
 private:
-	void ReportDamageEvent(const float Damage, const AController* Instigator, const AActor* Causer) const;
 };

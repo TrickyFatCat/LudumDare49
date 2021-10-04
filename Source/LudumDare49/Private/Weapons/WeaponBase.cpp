@@ -9,6 +9,7 @@
 #include "Weapons/ProjectileBase.h"
 #include "Sound/SoundCue.h"
 #include "Weapons/WeaponFxComponent.h"
+#include "Particles/ParticleSystemComponent.h"
 
 
 AWeaponBase::AWeaponBase()
@@ -20,9 +21,13 @@ AWeaponBase::AWeaponBase()
 
 	WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>("WeaponMesh");
 	WeaponMesh->SetupAttachment(GetRootComponent());
+	WeaponMesh->CastShadow = false;
 
 	WeaponMuzzle = CreateDefaultSubobject<USceneComponent>("WeaponMuzzle");
 	WeaponMuzzle->SetupAttachment(WeaponMesh);
+
+	MuzzleParticle = CreateDefaultSubobject<UParticleSystemComponent>("MuzzleParticle");
+	MuzzleParticle->SetupAttachment(WeaponMuzzle);
 
 	WeaponFXComponent = CreateDefaultSubobject<UWeaponFxComponent>("WeaponFXComponent");
 }
@@ -193,6 +198,7 @@ void AWeaponBase::MakeShot()
 
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ShotSound, WeaponMuzzle->GetComponentLocation());
 	DecreaseAmmo(WeaponData.ShotCost);
+	MuzzleParticle->Activate(true);
 	OnWeaponShot();
 	OnMakeShot.Broadcast();
 }

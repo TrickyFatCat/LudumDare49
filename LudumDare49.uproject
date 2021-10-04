@@ -11,8 +11,13 @@
 			"AdditionalDependencies": [
 				"Engine",
 				"TrickyPrototyping",
-				"UMG"
+				"UMG",
+				"AIModule"
 			]
 		}
+	],
+	"TargetPlatforms": [
+		"WindowsNoEditor",
+		"LinuxNoEditor"
 	]
 }
