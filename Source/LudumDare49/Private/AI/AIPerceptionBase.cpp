@@ -61,7 +61,7 @@ bool UAIPerceptionBase::CanSeePlayer() const
 
 	APawn* Pawn = AIController->GetPawn();
 
-	if (!Pawn) return nullptr;
+	if (!Pawn) return Result;
 
 	for (AActor* PerceivedActor : PerceivedActors)
 	{

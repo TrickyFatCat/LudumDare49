@@ -139,7 +139,7 @@ void AProjectileBase::DealRadialDamage()
 
 TSubclassOf<UDamageType> AProjectileBase::GetDamageType() const
 {
-	return !ProjectileData.DamageType ? UDamageType::StaticClass() : ProjectileData.DamageType;
+	return nullptr;
 }
 
 AController* AProjectileBase::GetOwnerController() const
