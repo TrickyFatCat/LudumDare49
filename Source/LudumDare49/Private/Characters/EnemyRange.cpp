@@ -52,7 +52,7 @@ void AEnemyRange::GetHitScanData(FHitResult& HitResult, const FVector& TraceStar
 	GetWorld()->LineTraceSingleByChannel(HitResult,
 	                                     TraceStart,
 	                                     TraceEnd,
-	                                     ECC_EngineTraceChannel2,
+	                                     ECC_GameTraceChannel2,
 	                                     CollisionQueryParams);
 }
 
