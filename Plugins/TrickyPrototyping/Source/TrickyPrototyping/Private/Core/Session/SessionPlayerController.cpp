@@ -61,6 +61,11 @@ void ASessionPlayerController::OnSessionStateChanged(const ESessionState NewStat
 		SetInputMode(FInputModeUIOnly());
 		DisableInput(this);
 	}
+
+	if (NewState == ESessionState::GameOver)
+	{
+		StopMovement();
+	}
 }
 
 void ASessionPlayerController::ProcessGamePause()
