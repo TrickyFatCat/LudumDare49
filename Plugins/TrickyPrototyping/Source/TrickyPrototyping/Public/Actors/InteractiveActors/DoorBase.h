@@ -9,6 +9,7 @@
 #include "DoorBase.generated.h"
 
 class UBaseBoxTriggerComponent;
+class USoundCue;
 
 /**
  * A base door class
@@ -43,6 +44,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Door", meta=(EditCondition="bRequireKey"))
 	EKey RequiredKey = EKey::Blue;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Door")
+	USoundCue* ErrorSound = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Door")
 	TMap<EKey, FColor> MessageColors {{EKey::Blue, FColor::Blue}, {EKey::Green, FColor::Green}, {EKey::Yellow, FColor::Yellow}};

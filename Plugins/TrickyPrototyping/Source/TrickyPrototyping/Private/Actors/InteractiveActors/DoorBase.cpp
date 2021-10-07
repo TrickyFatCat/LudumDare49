@@ -5,6 +5,8 @@
 #include "Components/TriggerComponents/BaseBoxTriggerComponent.h"
 #include "Components/KeyRingComponent.h"
 #include "Kismet/KismetTextLibrary.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
 
 ADoorBase::ADoorBase()
 {
@@ -67,6 +69,7 @@ void ADoorBase::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 		if (!KeyRingComponent->HasKey(RequiredKey))
 		{
 			SetKeyMessage();
+			UGameplayStatics::PlaySound2D(GetWorld(), ErrorSound);
 			return;
 		}
 	}
