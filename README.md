@@ -26,6 +26,12 @@ Dreadful Doombell has summoned dozens of uncanny beasts. Only the Gooseguy can f
 
 ![Screen_02](/Images/HONKIII_Screen_02.png)
 
+# OST
+
+You can listen to the game music on [**soundcloud**](https://soundcloud.com/sava_t/sets/honk-iii-ost).
+
+![Screen_03](/Images/HONKIII_Screen_03.png)
+
 # TEAM
 
 * [**Artyom "Tricky Fat Cat" Volkov**](https://twitter.com/tricky_fat_cat) (@tricky-fat-cat) — programming, game design;
@@ -39,7 +45,5 @@ Dreadful Doombell has summoned dozens of uncanny beasts. Only the Gooseguy can f
 * [**Grigorij "Syntheslav" Markov**](https://twitter.com/KrikIDDQD) (@krik-iddqd) — music and sounds;
 
 * [**Vitalii Kuznetsov**](https://twitter.com/VitaliiMorae) (@astramorae) — level design, game design; (FIRST GAME JAM EVER!)
-
-![Screen_03](/Images/HONKIII_Screen_03.png)
 
 ![Screen_04](/Images/HONKIII_Screen_04.png)
