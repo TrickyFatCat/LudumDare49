@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Actors/InteractiveActorBase.h"
 #include "Components/KeyRingComponent.h"
+#include "Components/TextRenderComponent.h"
 #include "DoorBase.generated.h"
 
 class UBaseBoxTriggerComponent;
@@ -31,6 +32,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UBaseBoxTriggerComponent* DoorTrigger = nullptr;
 	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
+	TArray<UTextRenderComponent*> Messages;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Door")
 	bool bIsTriggerEnabled = true;
 
@@ -39,6 +43,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Door", meta=(EditCondition="bRequireKey"))
 	EKey RequiredKey = EKey::Blue;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Door")
+	TMap<EKey, FColor> MessageColors {{EKey::Blue, FColor::Blue}, {EKey::Green, FColor::Green}, {EKey::Yellow, FColor::Yellow}};
 	
 	virtual void Disable() override;
 
@@ -57,4 +64,14 @@ protected:
 	                         AActor* OtherActor,
 	                         UPrimitiveComponent* OtherComp,
 	                         int32 OtherBodyIndex);
+
+	UFUNCTION(BlueprintCallable)
+	void SetMessagesTextAndColor(const FText Text, const FColor Color);
+
+	UFUNCTION(BlueprintCallable)
+	void SetMessagesHiddenInGame(const bool bIsHiddenInGame);
+
+	UFUNCTION(BlueprintCallable)
+	void SetKeyMessage();
+	
 };

@@ -270,6 +270,10 @@
 		{
 			"Name": "MacGraphicsSwitching",
 			"Enabled": false
+		},
+		{
+			"Name": "AlembicImporter",
+			"Enabled": false
 		}
 	],
 	"TargetPlatforms": [
