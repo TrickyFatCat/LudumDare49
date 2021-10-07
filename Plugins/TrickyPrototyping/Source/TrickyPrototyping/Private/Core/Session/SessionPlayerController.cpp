@@ -65,6 +65,7 @@ void ASessionPlayerController::OnSessionStateChanged(const ESessionState NewStat
 	if (NewState == ESessionState::GameOver)
 	{
 		StopMovement();
+		GetPawn()->TurnOff();
 	}
 }
 
