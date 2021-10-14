@@ -2,6 +2,10 @@
 
 A game made with UE4 during Ludum Dare 49.
 
+[**Download**](https://tricky-fat-cat.itch.io/honk-iii)
+
+[**Gameplay video**](https://www.youtube.com/watch?v=UyrWBqwv_Zg)
+
 ![HONKIII_Logo_1080.png](/Images/HONKIII_Logo_1080.png)
 
 # HONK HONK, MOTHERDUCKERS!
